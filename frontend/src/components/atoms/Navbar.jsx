@@ -14,6 +14,7 @@ function Navbars() {
           alt="Flowbite React Logo"
         />
         {/* <Logo/> */}
+        {/* <Logo/> */}
         {/* <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           Flowbite React
         </span> */}
@@ -25,7 +26,8 @@ function Navbars() {
           label={
             <Avatar
               alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              img="/images/avatar.jpg"
+              className="bg-black"
               rounded
             />
           }
