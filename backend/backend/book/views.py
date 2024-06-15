@@ -10,10 +10,15 @@ from .serializers import BookSerializer
 @permission_classes([IsAuthenticated])
 class BooksList(APIView):
     def get(self, request):
-        books = Book.objects.all()
-        return Response({
-            'books': BookSerializer(books, many=True).data
-        }, status=200)
+        try:
+            books = Book.objects.all()
+            return Response({
+                'books': BookSerializer(books, many=True).data
+            }, status=200)
+        except Book.DoesNotExist:
+            return Response({
+                'error': 'No books found'
+            }, status=404)
 
 @permission_classes([IsAuthenticated])
 class BookDetail(APIView):
@@ -40,17 +45,29 @@ class CreateBook(APIView):
 @permission_classes([IsLibrarian])
 class UpdateBook(APIView):
     def patch(self, request, pk):
-        book = Book.objects.get(id=pk)
-        serializer = BookSerializer(instance=book, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
+        try:
+            book = Book.objects.get(id=pk)
+            serializer = BookSerializer(book, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=200)
+            return Response(serializer.errors, status=400)
+        except Book.DoesNotExist:
+            return Response({
+                'error': 'Book does not exist'
+            }, status=404)
 
 
 @permission_classes([IsLibrarian])
 class DeleteBook(APIView):
     def delete(self, request, pk):
-        book = Book.objects.get(id=pk)
-        book.delete()
-        return Response(status=204)
+        try:
+            book = Book.objects.get(id=pk)
+            book.delete()
+            return Response({
+                'message': 'Book deleted successfully'
+            }, status=204)
+        except Book.DoesNotExist:
+            return Response({
+                'error': 'Book does not exist'
+            }, status=404)

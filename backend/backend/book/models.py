@@ -6,6 +6,7 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     description = models.TextField()
     gender = models.CharField(max_length=100)
+    # by default true
     is_available = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
