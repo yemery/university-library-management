@@ -15,6 +15,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .permissions import IsAdmin, IsLibrarian, IsStudent
 
+# add isAdmin perm
 class register(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -55,9 +56,6 @@ class user_infos(APIView):
         }, status=200)
 
 
-      
-    
-    
 class logout(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):

@@ -24,5 +24,6 @@ urlpatterns = [
       path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
 
     path('admin/', admin.site.urls),
-    path('api/', include('custom_user.urls'))
+    path('api/', include('custom_user.urls')),
+    path('api/', include('book.urls'))
 ]
