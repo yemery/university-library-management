@@ -13,7 +13,7 @@ from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-
+from .permissions import IsAdmin, IsLibrarian, IsStudent
 
 class register(APIView):
     def post(self, request):
@@ -46,7 +46,7 @@ class login(APIView):
        
     
 class user_infos(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsStudent]
     def get(self, request):
         user = request.user
         return Response({

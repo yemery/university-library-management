@@ -1,17 +1,22 @@
-# from rest_framework.permissions import BasePermission
-# from .views import authenticate_user
+from rest_framework.permissions import BasePermission
 
-# class IsAdmin(BasePermission):
-#     def has_permission(self, request, view):
-#         user = authenticate_user(request)
-#         return user.role == 'admin'
+class IsAdmin(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.role == 'admin':
+            return True
+        else:
+            return False
 
-# class IsLibrarian(BasePermission):
-#     def has_permission(self, request, view):
-#         user = authenticate_user(request)
-#         return user.role == 'librarian'
-
-# class IsStudent(BasePermission):
-#     def has_permission(self, request, view):
-#         user = authenticate_user(request)
-#         return user.role == 'student'
+class IsLibrarian(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.role == 'librarian':
+            return True
+        else:
+            return False
+        
+class IsStudent(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.role == 'student':
+            return True
+        else:
+            return False
