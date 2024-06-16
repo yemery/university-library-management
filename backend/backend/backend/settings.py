@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
     "rest_framework_simplejwt.token_blacklist",
-    'book',
+    "book",
+    "borrow",
 ]
 
 MIDDLEWARE = [
