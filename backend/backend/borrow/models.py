@@ -7,7 +7,7 @@ class book_borrow(models.Model):
     STATUS = [
         ("pending", "pending"),
         ("confirmed", "confirmed"),
-        ("delivered", "delivered"),
+        ('cancelled', 'cancelled')
     ]
     # might change this as previouslty with 2 options
     
