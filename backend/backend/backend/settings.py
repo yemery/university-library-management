@@ -194,7 +194,7 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173/",  # Your frontend URL
+    "http://localhost:5173",  # Your frontend URL
     # "https://your-production-site.com",  # Your production site
 ]
 CORS_ALLOW_CREDENTIALS = True
