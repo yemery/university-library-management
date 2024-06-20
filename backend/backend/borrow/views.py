@@ -104,6 +104,7 @@ class OwnBorrowList(APIView):
     def get(self, request):
         try:
             borrows = book_borrow.objects.filter(user_id=request.user.id)
+            # print(borrows[0].book_id.title)
             serializer = BorrowSerializer(borrows, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except book_borrow.DoesNotExist:
