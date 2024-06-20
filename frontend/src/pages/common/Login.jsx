@@ -4,7 +4,19 @@ import Logo from "../../components/atoms/Logo";
 import { useFormik } from 'formik';
 import ErrorMessage from "../../components/atoms/ErrorMessage";
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { authenticate } from '../../features/auth/authSlice';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+
+
 const Login = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const role = useSelector((state) => state.auth.user?.role);
+
   const loginForm = useFormik({
     initialValues: {
       email: '',
@@ -16,15 +28,39 @@ const Login = () => {
         .required("Required"),
       password: Yup.string()
         .max(25, "Only 25 caracters are allowed")
-        .min(8, "Enter at least 8 characters")
+        .min(3, "Enter at least 3 characters")
         .required("Required"),
       }),
-
-    onSubmit: values => {
-      // dispatch
-      console.log(values)
-    }
+      onSubmit: async (values) => {
+        try {
+          // localStorage.removeItem("role");
+          await dispatch(authenticate(values)); // Wait for authentication to complete
+          const role = localStorage.getItem("role");
+          if (role) {
+            navigate(`/${role}/dashboard`);
+          }
+        } catch (error) {
+          console.error('Authentication error:', error);
+          // Handle authentication failure if needed
+        }
+      }
+           
+    // onSubmit: values => {
+    //   dispatch(authenticate(values))
+    //   // navigate user to its dashboard based on role  after success request
+    //   const role = useSelector((state) => state.auth.user.role);
+    //   navigate(`${role}/dashboard`)
+    // }
   })
+
+  // const role = localStorage.getItem("role");
+  
+  // useEffect(() => {
+  //   if (role) {
+  //     navigate(`/${role}/dashboard`);
+  //   }
+  // }, [role]);
+
   return (
     // <div className="md:grid md:grid-cols-2 w-full h-screen justify-center">
      <div className="flex md:flex-row flex-col w-full h-screen"> 
