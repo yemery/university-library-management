@@ -12,11 +12,10 @@ from custom_user.models import User
 from book.models import Book
 from book.serializers import BookSerializer
 from custom_user.serializers import UserSerializer
-
-# Create your views here.
-
 from django.conf import settings
 from django.core.mail import send_mail
+
+# Create your views here.
 
 
 # add borrow book
@@ -26,14 +25,15 @@ class BorrowBook(APIView):
     def post(self, request):
         # check if the book is available
         try:
-            book = Book.objects.get(id=request.data["book_id"])
-            if book.is_available == True:
+            book = Book.objects.get(id=request.data["book"])            
+            if book.is_available:
                 serializer = BorrowSerializer(
                     data={
-                        "book_id": request.data["book_id"],
-                        "user_id": request.user.id,
+                        "book": book,
+                        "user": request.user,
                     }
                 )
+                
                 if serializer.is_valid():
                     serializer.save()
                     # trigger an email to the student to confirm the borrow
@@ -50,7 +50,8 @@ class BorrowBook(APIView):
 
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(
-                {"error": "Book is not available"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Book is not available",
+                    "book": BookSerializer(book).data}, status=status.HTTP_400_BAD_REQUEST
             )
 
         except Book.DoesNotExist:
@@ -64,11 +65,16 @@ class BorrowList(APIView):
 
     def get(self, request):
         try:
-            borrows = book_borrow.objects.all()
+            borrows = book_borrow.objects.select_related('book', 'user').all()
             serializer = BorrowSerializer(borrows, many=True)
 
-            # book = Book.objects.filter(id=request.book_id)
-            # user = User.objects.filter(id=request.user_id)
+            #def get(self, request, *args, **kwargs):
+        # queryset = YourModel.objects.select_related('related_field1', 'related_field2').all()
+        # serializer = YourModelSerializer(queryset, many=True)
+        # return Response(serializer.data)
+
+            # book = Book.objects.filter(id=request.book)
+            # user = User.objects.filter(id=request.user)
 
             # book = BookSerializer(book)
             # user = UserSerializer(user)
@@ -103,8 +109,8 @@ class OwnBorrowList(APIView):
 
     def get(self, request):
         try:
-            borrows = book_borrow.objects.filter(user_id=request.user.id)
-            # print(borrows[0].book_id.title)
+            borrows = book_borrow.objects.filter(user=request.user.id)
+            # print(borrows[0].book.title)
             serializer = BorrowSerializer(borrows, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except book_borrow.DoesNotExist:
@@ -124,7 +130,7 @@ class ConfirmBorrow(APIView):
             )
             if serializer.is_valid():
                 serializer.save()
-                book = Book.objects.get(id=borrow.book_id.id)
+                book = Book.objects.get(id=borrow.book.id)
                 book.is_available = False
                 book.save()
                 return Response(
@@ -152,7 +158,7 @@ class CancelBorrow(APIView):
             )
             if serializer.is_valid():
                 serializer.save()
-                book = Book.objects.get(id=borrow.book_id.id)
+                book = Book.objects.get(id=borrow.book.id)
                 book.is_available = True
                 book.save()
                 return Response(
