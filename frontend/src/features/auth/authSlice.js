@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../services/api";
 const initialState = {
   user: {},
-  isAuthenticated: false,
-  role:""
+  isAuthenticated: localStorage.getItem("access") ? true : false,
+  role: localStorage.getItem("role") || "",
 };
 
 export const authenticate= createAsyncThunk("auth/login", async (data) => {
@@ -18,6 +18,12 @@ export const authenticate= createAsyncThunk("auth/login", async (data) => {
 const authSlice = createSlice({
     name: "auth",
     initialState,
+    reducers:
+    {
+        checkLogin(state) {
+            state.isAuthenticated && state.role != "" ? true : false;
+        }
+    },
     extraReducers:(builder) => {
         builder.addCase(authenticate.fulfilled, (state, action) => {
             // console.log('entered')
@@ -39,4 +45,5 @@ const authSlice = createSlice({
     }
 });
 
+export const { checkLogin } = authSlice.actions;
 export default authSlice.reducer;

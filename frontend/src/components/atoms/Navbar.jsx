@@ -1,9 +1,14 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Logo from "./Logo";
-import { dropDownItems, librarianNavLinks } from "../../assets/navigationLinks";
+import { dropDownItems, librarianNavLinks, studentLinks, adminNavLinks} from "../../assets/navigationLinks";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function Navbars() {
+  const role = useSelector((state) => state.auth.role );
+  const NavLinks = role == "librarian" ? librarianNavLinks : role == "admin" ? adminNavLinks : studentLinks;
+
   return (
         <Navbar fluid rounded className="fixed w-full">
       <Navbar.Brand href="/">
@@ -56,10 +61,11 @@ function Navbars() {
       </div>
       <Navbar.Collapse>
         {/* add later navbar depending on links */}
-        {librarianNavLinks.map((link) => {
+        {/* call navlinks of current role */}
+        {NavLinks.map((link) => {
           return (
             <NavLink
-              to={`librarian/${link.path}`}
+              to={`${role}/${link.path}`}
               key={link.path}
               className={({ isActive }) => {
                 return isActive ? "text-black font-semibold" : "text-gray-600 font-normal";
@@ -69,6 +75,10 @@ function Navbars() {
             </NavLink>
           );
         })}
+
+        {
+
+        }
         {/* <Navbar.Link href="#" active>
           Home
         </Navbar.Link>

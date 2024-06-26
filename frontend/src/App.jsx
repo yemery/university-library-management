@@ -1,13 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/common/Login";
-import LibrarianDashboard from "./pages/librarian/Dashboard";
+// import LibrarianDashboard from "./pages/librarian/Dashboard";
 import AppLayout from "./layouts/AppLayout";
 import Books from "./pages/librarian/Books";
 import Borrow from "./pages/librarian/Borrow";
 import WaitingList from "./pages/librarian/WaitingList";
 import Profile from "./pages/common/Profile";
-import AdminDashboard from "./pages/admin/Dashboard";
-import authMiddleware from "./middleware/authMiddleware";
+// import AdminDashboard from "./pages/admin/Dashboard";
+// import authMiddleware from "./middleware/authMiddleware";
+import Auth from "./middleware/Auth";
+import Unauthorized from "./pages/common/Unauthorized";
+
+// ___
+// import {Dashboard as StudentDashboard} from "./pages/student/Dashboard";
+import Dashboard from "./pages/librarian/Dashboard";
+// import {Dashboard as AdminDashboard} from "./pages/admin/Dashboard";
+
 
 export default function App() {
   const router = createBrowserRouter([
@@ -16,8 +24,13 @@ export default function App() {
       element: <Login />,
     },
     {
+      path:'/Unauthorized',
+      element:<Unauthorized/>
+    },
+    {
       path: "/",
-      element: <AppLayout />, // miiddleware
+      element: <Auth component={AppLayout} />,
+      // element: <AppLayout />,
       // errorElement: <ErrorPage />,
       children: [
         {
@@ -26,11 +39,14 @@ export default function App() {
           children: [
             {
               path: "dashboard",
-              element: <authMiddleware component={LibrarianDashboard} />,
+              element: <Auth component={Dashboard} />,
+              // element: <Dashboard />,
+              // element: <authMiddleware component={LibrarianDashboard} />,
             },
             {
               path: "books",
-              element: <authMiddleware component={Books} />,
+              element: <Auth component={Books} />,
+              // element: <authMiddleware component={Books} />,
             },
             {
               path: "borrows",
@@ -38,17 +54,17 @@ export default function App() {
               children: [
                 {
                   path: "",
-                  element: <authMiddleware component={Borrow} />,
+                  // element: <authMiddleware component={Borrow} />,
                 },
                 {
                   path: "waiting-list",
-                  element: <authMiddleware component={WaitingList} />,
+                  // element: <authMiddleware component={WaitingList} />,
                 },
               ],
             },
             {
               path: "profile",
-              element: <authMiddleware component={Profile} />,
+              // element: <authMiddleware component={Profile} />,
             },
           ],
         },
@@ -57,10 +73,19 @@ export default function App() {
           children: [
             {
               path: "dashboard",
-              element: <authMiddleware component={AdminDashboard} />,
+              // element: <Auth component={AdminDashboard} />,
+              // element: <authMiddleware component={AdminDashboard} />,
             },
           ],
         },
+        {
+          path:'student',
+          children:[
+            {
+              path:'dashboard',
+              // element: <Auth component={StudentDashboard}/>
+        }]
+        }
       ],
     },
   ]);
