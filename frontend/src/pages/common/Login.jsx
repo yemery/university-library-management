@@ -5,8 +5,8 @@ import { useFormik } from 'formik';
 import ErrorMessage from "../../components/atoms/ErrorMessage";
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { authenticate, checkLogin } from '../../features/auth/authSlice';
-import { Navigate, useNavigate } from "react-router-dom";
+import { authenticate } from '../../features/auth/authSlice';
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 
@@ -16,9 +16,16 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const role = useSelector((state) => state.auth.role);
-  if(dispatch(checkLogin())){
-    return <Navigate to={`/${role}/dashboard`}/>
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // redirect user to its dashboard based on role if authenticated
+  useEffect(() => { 
+    if (isAuthenticated) {
+      navigate(`/${role}/dashboard`);
+    }
+  }, [isAuthenticated]);
+  
+  
   const loginForm = useFormik({
     initialValues: {
       email: '',

@@ -4,11 +4,21 @@ import { dropDownItems, librarianNavLinks, studentLinks, adminNavLinks} from "..
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 function Navbars() {
   const role = useSelector((state) => state.auth.role );
   const NavLinks = role == "librarian" ? librarianNavLinks : role == "admin" ? adminNavLinks : studentLinks;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const handleLogout = ()=>{
+    dispatch(logout());
+    navigate('/');
 
+    
+  }
   return (
         <Navbar fluid rounded className="fixed w-full">
       <Navbar.Brand href="/">
@@ -44,18 +54,11 @@ function Navbars() {
               name@flowbite.com
             </span>
           </Dropdown.Header>
-          {/* <Dropdown.Item>Profile</Dropdown.Item>
+          <Dropdown.Item>Profile</Dropdown.Item>
           <Dropdown.Item>Settings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item> */}
-          {dropDownItems.map((link) => {
-            return (
-              <Dropdown.Item key={link.path}>
-                {/* thinking about removing prefix cus we might like to use props */}
-                <Link to={`librarian/${link.label}`}>{link.label}</Link>
-              </Dropdown.Item>
-            );
-          })}
+          <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+          
         </Dropdown>
         <Navbar.Toggle />
       </div>
