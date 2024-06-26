@@ -1,48 +1,106 @@
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import {  Checkbox, Label, TextInput } from "flowbite-react";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import ErrorMessage from "../../components/atoms/ErrorMessage";
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
+import { postBook } from "../../features/book/bookSlice";
+
+
 
 function AddBookForm() {
+  const dispatch = useDispatch()
+
+
+  const bookForm = useFormik({
+    initialValues: {
+      title:'',
+    author:'',
+    description:'',
+    gender:'',
+  },
+  validationSchema: Yup.object({
+    title: Yup.string()
+        .required("Required"),
+    author: Yup.string()
+        .required("Required"),
+    description: Yup.string()
+        .required("Required"),
+    gender: Yup.string()
+        .required("Required"),
+  }),
+  onSubmit: async (values) => {
+    try{
+      await dispatch(postBook(values))
+    } catch (error)
+    {
+      console.log(error)
+    }
+  }
+})
   return (
-    <form>
+    <form onSubmit={bookForm.handleSubmit}>
          <div className="space-y-6">
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-            Sign in to our platform
-          </h3>
+
+add  new book
+</h3>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="email" value="Your email" />
-            </div>
-            <TextInput id="email" placeholder="name@company.com" required />
+            
+            <Input 
+              label="title"
+              type="text"
+              name="title"
+              placeholder={"enter title of the book"}
+              value={bookForm.values.title} onChange={bookForm.handleChange} onBlur={bookForm.handleBlur}
+            />
+            {bookForm.touched.title && bookForm.errors.title && (
+              <ErrorMessage message={bookForm.errors.title} />
+            )}
           </div>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="password" value="Your password" />
-            </div>
-            <TextInput id="password" type="password" required />
+          
+            <Input 
+              label="author"
+              type="text"
+              name="author"
+              placeholder={"enter author of the book"}
+              value={bookForm.values.author} onChange={bookForm.handleChange} onBlur={bookForm.handleBlur}
+            />
+            {bookForm.touched.author && bookForm.errors.author && (
+              <ErrorMessage message={bookForm.errors.author} />
+            )}
           </div>
-          <div className="flex justify-between">
-            <div className="flex items-center gap-2">
-              <Checkbox id="remember" />
-              <Label htmlFor="remember">Remember me</Label>
-            </div>
-            <a
-              href="#"
-              className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
-            >
-              Lost Password?
-            </a>
+          <div>
+          <Input 
+              label="description"
+              type="text"
+              name="description"
+              placeholder={"enter description of the book"}
+              value={bookForm.values.description} onChange={bookForm.handleChange} onBlur={bookForm.handleBlur}
+            />
+            {bookForm.touched.description && bookForm.errors.description && (
+              <ErrorMessage message={bookForm.errors.description} />
+            )}
+          </div>
+          <div>
+          <Input 
+              label="gender"
+              type="gender"
+              name="gender"
+              placeholder={"enter gender of the book"}
+              value={bookForm.values.gender} onChange={bookForm.handleChange} onBlur={bookForm.handleBlur}
+            />
+            {bookForm.touched.gender && bookForm.errors.gender && (
+              <ErrorMessage message={bookForm.errors.gender} />
+            )}
           </div>
           <div className="w-full">
-            <Button>Log in to your account</Button>
+            {/* <Button className="bg-red-500 hover:bg-red-600" > Add Book</Button> */}
+            <Button text="Submit" />
           </div>
-          <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-            Not registered?&nbsp;
-            <a
-              href="#"
-              className="text-cyan-700 hover:underline dark:text-cyan-500"
-            >
-              Create account
-            </a>
-          </div>
+         
         </div>
     </form>
   )

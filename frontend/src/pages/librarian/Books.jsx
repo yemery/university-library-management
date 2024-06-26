@@ -46,7 +46,7 @@ function Books() {
       <div className="flex gap-8 flex-wrap">
         {/* <Button action={addBook} text="add a book" /> */}
         <Button
-          className="w-80 bg-black hover:bg-red-600 hover:opacity-75  text-white"
+          className="w-80 bg-black  hover:opacity-75 text-white"
           onClick={addBook}
         >
           Add Book
