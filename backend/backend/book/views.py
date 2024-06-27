@@ -7,15 +7,28 @@ from rest_framework.views import APIView
 from .models import Book
 from .serializers import BookSerializer
 
+from django.core.paginator import Paginator,EmptyPage
 @permission_classes([IsAuthenticated])
 class BooksList(APIView):
     def get(self, request):
         try:
             books = Book.objects.all()
+            # perpage by default is 10 no need to gve user to change it
+            # perpage=request.query_params.get('perpage',default=1)
+            page=request.query_params.get('page',default=1)
+            # calling the paginator in url example http://api/books/?perpage=5&page=2
+            # well add only the page in the url example http://api/books/?page=2
+            paginator=Paginator(books,per_page=10)
+            try:
+                books=paginator.page(number=page)
+            except EmptyPage: 
+                return Response({
+                    'error': 'No books found'
+                }, status=404)
             return Response({
                 'books': BookSerializer(books, many=True).data
             }, status=200)
-        except Book.DoesNotExist:
+        except Book.DoesNotExist : 
             return Response({
                 'error': 'No books found'
             }, status=404)
