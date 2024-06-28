@@ -1,28 +1,46 @@
-import { Button, Select } from "flowbite-react";
-import React, { useState } from "react";
-import ModalContainer from "../../components/molecules/ModalContainer";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SelectFilter from "../../components/atoms/SelectFilter";
 import { borrowSelectOptions } from "../../assets/filteringOptions";
+import { useDispatch } from "react-redux";
+import { borrowsList } from "../../features/borrow/borrowThunks";
+import { Button, Select } from "flowbite-react";
+import ModalContainer from "../../components/molecules/ModalContainer";
+import SelectFilter from "../../components/atoms/SelectFilter";
 import SearchFilter from "../../components/atoms/SearchFilter";
+import BorrowsTable from "../../components/atoms/BorrowsTable";
+import ShowBorrow from "../../components/molecules/ShowBorrow";
+import EditBorrow from "../../components/molecules/EditBorrow";
 
 function Borrow() {
-  const [openModal, setOpenModal] = useState(false);
-
-  const addBorrow = () => {
-    setOpenModal(true);
-  };
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(borrowsList());
+  }, []);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  const handleModal = (content) => {
+    setOpenModal(true);
+    setModalContent(content);
+  };
+
+  const contents = {
+    showBorrow: <ShowBorrow />,
+    editBorrow: <EditBorrow />,
+  };
 
   return (
     <div>
       <div className="flex gap-8 flex-wrap">
-        <Button
+        {/* <Button
           className="w-80 bg-black hover:opacity-75  text-white"
-          onClick={addBorrow}
+          onClick={() => handleModal("addBook")}
         >
           Add borrow
-        </Button>
+        </Button> */}
 
         <Button
           className="bg-black"
@@ -43,9 +61,16 @@ function Borrow() {
         <SelectFilter options={borrowSelectOptions} />
         <SearchFilter />
       </div>
+        <BorrowsTable
+          showModal ={()=>handleModal("showBorrow")}
+          editModal={() => handleModal("editBorrow")}
+        />
 
-      <ModalContainer openModal={openModal} setOpenModal={() => setOpenModal(false)}>
-        test
+      <ModalContainer
+        openModal={openModal}
+        setOpenModal={() => setOpenModal(false)}
+      >
+        {contents[modalContent]}
       </ModalContainer>
     </div>
   );

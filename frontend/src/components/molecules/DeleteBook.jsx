@@ -6,7 +6,7 @@ import { deleteBook } from "../../features/book/bookThunks";
 import { useNavigate } from "react-router-dom";
 
 function DeleteBook() {
-  const id = useSelector((state) => state.books.book.id);
+  const id = useSelector((state) => state.books.bookID);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

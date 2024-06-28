@@ -21,17 +21,6 @@ function Books() {
     dispatch(booksList());
   }, []);
 
-  // const addBook = () => {
-  //   setOpenModal(true);
-  //   setModalForm("addBook");
-  // };
-
-  // const delete = () => {
-  //   setOpenModal(true);
-  //   setModalForm("deleteBook");
-  // };
-
-  // more efficient way to write the above code
   const handleModal = (content) => {
     setOpenModal(true);
     setModalForm(content);

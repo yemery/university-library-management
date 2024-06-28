@@ -54,11 +54,12 @@ export default function App() {
               children: [
                 {
                   path: "",
+                  element: <Auth component={Borrow} />,
                   // element: <authMiddleware component={Borrow} />,
                 },
                 {
                   path: "waiting-list",
-                  // element: <authMiddleware component={WaitingList} />,
+                  element: <Auth component={WaitingList} />,
                 },
               ],
             },
