@@ -1,35 +1,57 @@
-import {createSlice , createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { postBook, booksList, updateBook, deleteBook } from "./bookThunks";
 
-import api from '../../services/api';
 const initialState = {
-    books:[],
-
+  books: [],
+  bookID: 0,
+  book: {},
 };
-// post book thunk
-export const postBook = createAsyncThunk('books/postBook', async (data) => {
-    const response = await api.post('books/create/', data,{
-        headers:{
-            'Authorization':`Bearer ${localStorage.getItem('access')}`
-        }    
-    });
-    if(response.status == 201){
-        return response.data;
-    }
-    return response.status;
-});
 
 const bookSlice = createSlice({
-name:'books',
-initialState,
-reducers:{},
-extraReducers:(builder) => {
-    builder.addCase(postBook.fulfilled, (state, action) => {
-        state.books.push(action.payload);
-    });
-    builder.addCase(postBook.rejected, (state, action) => {
-        console.log('rejected', action);
-    });
-}
+  name: "books",
+  initialState,
+  reducers: {
+    targetBookID: (state, action) => {
+      state.bookID = action.payload;
+    },
+    targetBook: (state, action) => {
+      state.book = action.payload
+    },
+  },
 
+  extraReducers: (builder) => {
+    // Add a new book
+    builder.addCase(postBook.fulfilled, (state, action) => {
+      state.books.push(action.payload);
+    });
+    builder.addCase(postBook.rejected, (action) => {
+      console.log("rejected", action);
+    });
+
+    // Get all books
+    builder.addCase(booksList.fulfilled, (state, action) => {
+      state.books = action.payload;
+    });
+    builder.addCase(booksList.rejected, (action) => {
+      console.log("rejected", action);
+    });
+
+    // Update a book
+    builder.addCase(updateBook.fulfilled, (state, action) => {
+      const index = state.books.findIndex(
+        (book) => book.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.books[index] = action.payload;
+      }
+    });
+
+    // Delete a book
+    builder.addCase(deleteBook.fulfilled, (state, action) => {
+      state.books = state.books.filter((book) => book.id !== action.payload);
+    });
+  },
 });
+
 export default bookSlice.reducer;
+export const { targetBookID, targetBook } = bookSlice.actions;

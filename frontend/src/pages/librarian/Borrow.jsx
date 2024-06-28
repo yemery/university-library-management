@@ -1,6 +1,6 @@
 import { Button, Select } from "flowbite-react";
 import React, { useState } from "react";
-import AddModel from "../../components/molecules/AddModel";
+import ModalContainer from "../../components/molecules/ModalContainer";
 import { useNavigate } from "react-router-dom";
 import SelectFilter from "../../components/atoms/SelectFilter";
 import { borrowSelectOptions } from "../../assets/filteringOptions";
@@ -44,9 +44,9 @@ function Borrow() {
         <SearchFilter />
       </div>
 
-      <AddModel openModal={openModal} setOpenModal={() => setOpenModal(false)}>
+      <ModalContainer openModal={openModal} setOpenModal={() => setOpenModal(false)}>
         test
-      </AddModel>
+      </ModalContainer>
     </div>
   );
 }

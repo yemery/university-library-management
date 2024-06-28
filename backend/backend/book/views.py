@@ -25,9 +25,9 @@ class BooksList(APIView):
                 return Response({
                     'error': 'No books found'
                 }, status=404)
-            return Response({
-                'books': BookSerializer(books, many=True).data
-            }, status=200)
+            # return list of objects 
+            return Response(BookSerializer(books, many=True).data, status=200)
+
         except Book.DoesNotExist : 
             return Response({
                 'error': 'No books found'

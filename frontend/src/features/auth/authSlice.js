@@ -62,9 +62,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
       state.role = "";
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
-      localStorage.removeItem("role");
+      // localStorage.removeItem("access");
+      // localStorage.removeItem("refresh");
+      // localStorage.removeItem("role");
+      localStorage.clear()
     });
   },
 });
