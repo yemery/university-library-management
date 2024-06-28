@@ -12,7 +12,7 @@ from django.core.paginator import Paginator,EmptyPage
 class BooksList(APIView):
     def get(self, request):
         try:
-            books = Book.objects.all()
+            books = Book.objects.all().order_by('-created_at')
             # perpage by default is 10 no need to gve user to change it
             # perpage=request.query_params.get('perpage',default=1)
             page=request.query_params.get('page',default=1)
