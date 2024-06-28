@@ -12,9 +12,9 @@ from django.conf import settings
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 from .permissions import IsAdmin, IsLibrarian, IsStudent
-
+from django.http import HttpResponse
+import pandas as pd
 # add isAdmin perm
 class register(APIView):
     def post(self, request):
@@ -69,3 +69,39 @@ class logout(APIView):
     
 
 
+class ImportUsers(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    def post(self, request):
+        # extract the file excem from the request
+        try:
+            file = request.FILES['file']
+            # read the file
+            data = pd.read_csv(file)
+            # iterate over the rows without the column names
+            for i, row in data.iterrows():
+                # create a user for each row
+                # user = User.objects.create_user(
+                #     email=row['email'],
+                #     role=row['role'],
+                #     first_name=row['first_name'],
+                #     last_name=row['last_name'],
+                #     password='password'
+                # )
+                # user.save()
+                print(row)
+            return Response({'message': 'Users imported successfully'}, status=201)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
+        
+
+class ExportUsers(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    def get(self, request):
+        users = User.objects.all()
+        data = pd.DataFrame(list(users.values())) # convert the queryset to a dataframe using the values() method
+        # data.to_csv('users.csv', index=False) 
+        # send the file as a response
+        response = HttpResponse(data.to_csv(), content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=users.csv'
+
+        return response
