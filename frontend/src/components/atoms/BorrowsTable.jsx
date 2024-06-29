@@ -1,19 +1,10 @@
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadCell,
-  TableRow,
-} from "flowbite-react";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { MdModeEdit, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  targetBorrow,
-  targetBorrowID,
-} from "../../features/borrow/borrowSlice";
+import { targetBorrow, targetBorrowID } from "../../features/borrow/borrowSlice";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+
 function BorrowsTable({ showModal, editModal,editModalDates }) {
   const borrows = useSelector((state) => state.borrows.borrows);
   const dispatch = useDispatch();
@@ -27,8 +18,9 @@ function BorrowsTable({ showModal, editModal,editModalDates }) {
     dispatch(targetBorrowID(id));
     editModal();
   };
-  const handleEditDates = (id) => {
-    dispatch(targetBorrowID(id));
+
+  const handleEditDates = (borrow) => {
+    dispatch(targetBorrow(borrow));
     editModalDates();
   }
 
@@ -59,10 +51,10 @@ function BorrowsTable({ showModal, editModal,editModalDates }) {
               </TableCell>
               <TableCell>{borrow.status}</TableCell>
               <TableCell>
-                {borrow.borrow_date ? borrow.borrow_date : "null"}
+                {borrow.borrow_date ? `${new Date(borrow.borrow_date).toLocaleDateString('en-GB')}` : "null"}
               </TableCell>
               <TableCell>
-                {borrow.return_date ? borrow.return_date : "null"}
+                {borrow.return_date ? `${new Date(borrow.return_date).toLocaleDateString('en-GB')}` : "null"}
               </TableCell>
               <TableCell>
                 <div className="flex gap-4">
@@ -72,7 +64,7 @@ function BorrowsTable({ showModal, editModal,editModalDates }) {
                   />
                   <MdModeEdit
                     className="cursor-pointer"
-                    onClick={() => handleEditDates(borrow.id)}
+                    onClick={() => handleEditDates(borrow)}
                   />
                   <HiOutlineDotsHorizontal
                     className="cursor-pointer"
