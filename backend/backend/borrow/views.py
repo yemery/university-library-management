@@ -61,9 +61,19 @@ class BorrowList(APIView):
     def get(self, request):
         
         borrows = book_borrow.objects.all().order_by('-created_at')
+        # filtering by status and user first name and last name
+        status = request.query_params.get('status', None)
+        user = request.query_params.get('user', None)
+        if status is not None:
+            borrows = borrows.filter(status=status)
+        if user is not None:
+            borrows = borrows.filter(user__first_name__icontains=user) | borrows.filter(user__last_name__icontains=user)
+        
         # using the new serializer 
         serializer = BorrowDetailSerializer(borrows, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data, status=200
+        )
 
     def patch(self, request, pk):
         try:
