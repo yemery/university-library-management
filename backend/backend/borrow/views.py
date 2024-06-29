@@ -29,14 +29,15 @@ class BorrowBook(APIView):
                 data = {
                     "book": book.id,
                     "user": request.user.id,
-                    
                 }
                 serializer = BorrowSerializer(data=data)
                 
                 if serializer.is_valid():
                     serializer.save()
-                    # book.is_available = False  
-                    # book.save()
+
+                    # update the book availability
+                    book.is_available = False  
+                    book.save()
 
                     send_mail(
                         "Borrow Confirmation",
@@ -45,6 +46,7 @@ class BorrowBook(APIView):
                         [request.user.email],
                         fail_silently=False,
                     )
+                    
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:

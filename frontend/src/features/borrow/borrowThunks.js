@@ -28,4 +28,28 @@ const cancelBorrow = createAsyncThunk("/borrows/cancel", async (id) => {
   return response.data;
 });
 
-export { borrowsList, confirmBorrow, cancelBorrow };
+const borrowABook = createAsyncThunk("/borrows/borrow", async (id) => {
+  const response = await api.post(
+    `borrow/`,
+    { book: id },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    }
+  );
+  return response.data;
+});
+
+// const waitlistABook = createAsyncThunk("/borrows/waitlist", async (id) => {
+//   const response = await api.post(`waitlist/`, {
+//     book: id,
+//   }, {
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("access")}`,
+//     },
+//   });
+//   return response.data;
+// });
+
+export { borrowsList, confirmBorrow, cancelBorrow, borrowABook };

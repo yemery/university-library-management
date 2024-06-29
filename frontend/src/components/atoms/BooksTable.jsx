@@ -1,4 +1,5 @@
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,7 +13,7 @@ import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import { targetBook, targetBookID } from "../../features/book/bookSlice";
 
-function BooksTable({ editModal, deleteModal }) {
+function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
   const books = useSelector((state) => state.books.books);
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
@@ -24,13 +25,26 @@ function BooksTable({ editModal, deleteModal }) {
     return false;
   };
 
+  // librarian actions
   const handleEdit = (book) => {
     dispatch(targetBook(book));
     editModal();
   };
+
   const handleDelete = (id) => {
     dispatch(targetBookID(id));
     deleteModal();
+  };
+
+  // student actions
+  const handleBorrow = (id) => {
+    dispatch(targetBookID(id));
+    borrowModal();
+  };
+
+  const handleWaitlist = (id) => {
+    dispatch(targetBookID(id));
+    waitlistModal();
   };
 
   return (
@@ -73,8 +87,20 @@ function BooksTable({ editModal, deleteModal }) {
                       onClick={() => handleDelete(book.id)}
                     />
                   </div>
+                ) : book.is_available ? (
+                  <Button
+                    className="bg-black text-white"
+                    onClick={() => handleBorrow(book.id)}
+                  >
+                    Borrow
+                  </Button>
                 ) : (
-                  book.is_available ? "borrow" : "wait list"
+                  <Button
+                    className="bg-black text-white"
+                    onClick={() => handleWaitlist(book.id)}
+                  >
+                    Waitlist
+                  </Button>
                 )}
               </TableCell>
             </TableRow>

@@ -10,6 +10,7 @@ import SearchFilter from "../../components/atoms/SearchFilter";
 import BooksTable from "../../components/atoms/BooksTable";
 import DeleteBook from "../../components/molecules/DeleteBook";
 import EditBookForm from "../../components/molecules/EditBookForm";
+import BorrowBook from "../../components/molecules/BorrowBook";
 
 function Books() {
   const [openModal, setOpenModal] = useState(false);
@@ -30,6 +31,8 @@ function Books() {
     addBook: <AddBookForm />,
     editBook: <EditBookForm />,
     deleteBook: <DeleteBook />,
+    borrowBook: <BorrowBook/>,
+    waitlistBook: <h1>Waitlist Book</h1>,
   };
 
   return (
@@ -55,6 +58,8 @@ function Books() {
       <BooksTable
         editModal={() => handleModal("editBook")}
         deleteModal={() => handleModal("deleteBook")}
+        borrowModal={() => handleModal("borrowBook")}
+        waitlistModal={() => handleModal("waitlistBook")}
       />
     </div>
   );
