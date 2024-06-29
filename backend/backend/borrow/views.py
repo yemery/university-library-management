@@ -62,12 +62,15 @@ class BorrowList(APIView):
         
         borrows = book_borrow.objects.all().order_by('-created_at')
         # filtering by status and user first name and last name
+        title = request.query_params.get('title', None)
         status = request.query_params.get('status', None)
         user = request.query_params.get('user', None)
         if status is not None:
             borrows = borrows.filter(status=status)
         if user is not None:
             borrows = borrows.filter(user__first_name__icontains=user) | borrows.filter(user__last_name__icontains=user)
+        if title is not None:
+            borrows = borrows.filter(book__title__icontains=title)
         
         # using the new serializer 
         serializer = BorrowDetailSerializer(borrows, many=True)

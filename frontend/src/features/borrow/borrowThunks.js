@@ -1,11 +1,13 @@
 import api from "../../services/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const borrowsList = createAsyncThunk("borrows/", async () => {
+const borrowsList = createAsyncThunk("borrows/", async (params) => {
   const response = await api.get("borrows/", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
+    // params: params,
+    params: params
   });
   return response.data;
 });
@@ -60,5 +62,6 @@ const studentBorrows = createAsyncThunk("/borrows/user/", async () => {
   });
   return response.data;
 });
+
 
 export { borrowsList, confirmBorrow, cancelBorrow, borrowABook, studentBorrows };

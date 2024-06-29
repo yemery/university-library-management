@@ -5,48 +5,58 @@ import SearchFilter from "../atoms/SearchFilter";
 import SelectFilter from "../atoms/SelectFilter";
 import { borrowSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { borrowsList } from "../../features/borrow/borrowThunks";
 
 function BorrowsSearchFilter() {
+  const dispatch = useDispatch();
   const searchFilter = useFormik({
     initialValues: {
-      titlesearch: "",
-      studentSearch: "",
-      statusFilter: "",
+      title: "",
+      user: "",
+      status: "",
     },
     validationSchema: Yup.object({
-      titlesearch: Yup.string(),
-      studentSearch: Yup.string(),
-      statusFilter: Yup.string(),
+      title: Yup.string(),
+      user: Yup.string(),
+      status: Yup.string(),
     }),
     onSubmit: (values) => {
       // check at least one field should be filled
       if (
-        values.titlesearch !== "" ||
-        values.studentSearch !== "" ||
-        values.statusFilter !== ""
+        values.title !== "" ||
+        values.user !== "" ||
+        values.status !== ""
       ) {
         console.log(values);
         // dispatch(searchFilterBorrows(values))
+        dispatch(borrowsList(values));
       }
+      
     },
   });
+  
+  const handleClear = () => {
+    searchFilter.resetForm();
+    dispatch(borrowsList());
+  }
   return (
     <form className="flex gap-8" onSubmit={searchFilter.handleSubmit}>
       <SearchFilter
         search="title"
-        name="titlesearch"
-        value={searchFilter.values.titlesearch}
+        name="title"
+        value={searchFilter.values.title}
         change={searchFilter.handleChange}
       />
       <SearchFilter
-        search="author"
-        name="studentSearch"
-        value={searchFilter.values.studentSearch}
+        search="user"
+        name="user"
+        value={searchFilter.values.user}
         change={searchFilter.handleChange}
       />
       <SelectFilter
-        name="statusFilter"
-        value={searchFilter.values.statusFilter}
+        name="status"
+        value={searchFilter.values.status}
         change={searchFilter.handleChange}
         options={borrowSelectOptions}
       />
@@ -66,6 +76,9 @@ function BorrowsSearchFilter() {
             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
           />
         </svg>
+      </Button>
+      <Button className="bg-black" type="submit" onClick={handleClear}>
+       clear
       </Button>
     </form>
   );

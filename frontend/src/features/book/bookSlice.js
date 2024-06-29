@@ -31,6 +31,7 @@ const bookSlice = createSlice({
     // Get all books
     builder.addCase(booksList.fulfilled, (state, action) => {
       state.books = action.payload;
+      console.log("books", state.books);
     });
     builder.addCase(booksList.rejected, (action) => {
       console.log("rejected", action);

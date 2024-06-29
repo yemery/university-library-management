@@ -14,19 +14,24 @@ const postBook = createAsyncThunk("books/postBook", async (data) => {
   return response.status;
 });
 
-const booksList = createAsyncThunk("books/", async ( params)=> {
+const booksList = createAsyncThunk("books/", async (params)=> {
   // could sedn the search filter values here
   
   const response = await api.get("books/", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
-    // body: Json.stringify(params)
+    // its working with params
+    // params:{
+    //   title:"vv"
+    // },
+    params: {params},
 
 
 
    
   });
+  console.log(params)
   return response.data;
 });
 
