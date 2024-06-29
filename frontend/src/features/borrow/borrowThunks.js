@@ -6,8 +6,10 @@ const borrowsList = createAsyncThunk("borrows/", async (params) => {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
-    // params: params,
-    params: params
+    params: params,
+    // params: {
+    //   title:"ccc"
+    // }
   });
   return response.data;
 });

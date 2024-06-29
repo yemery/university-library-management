@@ -22,17 +22,17 @@ function BorrowsSearchFilter() {
       status: Yup.string(),
     }),
     onSubmit: (values) => {
-      // check at least one field should be filled
-      if (
-        values.title !== "" ||
-        values.user !== "" ||
-        values.status !== ""
-      ) {
-        console.log(values);
-        // dispatch(searchFilterBorrows(values))
-        dispatch(borrowsList(values));
+      const filters = {}
+      if (values.title != "") {
+        filters.title = values.title
       }
-      
+      if (values.user != "") {
+        filters.user = values.user
+      }
+      if (values.status != "") {
+        filters.status = values.status
+      }
+      dispatch(borrowsList(filters));
     },
   });
   
