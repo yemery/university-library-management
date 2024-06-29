@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { booksList } from "../../features/book/bookThunks";
 import { booksSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
@@ -11,12 +11,14 @@ import BooksTable from "../../components/atoms/BooksTable";
 import DeleteBook from "../../components/molecules/DeleteBook";
 import EditBookForm from "../../components/molecules/EditBookForm";
 import BorrowBook from "../../components/molecules/BorrowBook";
+import BooksSearchFilter from "../../components/molecules/BooksSearchFilter";
 
 function Books() {
   const [openModal, setOpenModal] = useState(false);
   const [modalForm, setModalForm] = useState(null);
 
   const dispatch = useDispatch();
+  const role = useSelector((state) => state.auth.role);
 
   useEffect(() => {
     dispatch(booksList());
@@ -31,22 +33,25 @@ function Books() {
     addBook: <AddBookForm />,
     editBook: <EditBookForm />,
     deleteBook: <DeleteBook />,
-    borrowBook: <BorrowBook/>,
+    borrowBook: <BorrowBook />,
     waitlistBook: <h1>Waitlist Book</h1>,
   };
 
   return (
     <div>
-      <div className="flex gap-8 flex-wrap">
-        <Button
-          className="w-80 bg-black  hover:opacity-75 text-white"
-          onClick={() => handleModal("addBook")}
-        >
-          Add Book
-        </Button>
+      <div className="flex flex-col gap-8">
+        {role == "librarian" && (
+          <Button
+            className="w-80 bg-black  hover:opacity-75 text-white"
+            onClick={() => handleModal("addBook")}
+          >
+            Add Book
+          </Button>
+        )}
 
-        <SelectFilter options={booksSelectOptions} />
-        <SearchFilter />
+        {/* <SelectFilter options={booksSelectOptions} />
+        <SearchFilter /> */}
+        <BooksSearchFilter  />
       </div>
       <ModalContainer
         openModal={openModal}

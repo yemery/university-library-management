@@ -5,8 +5,9 @@ const borrowSelectOptions = [
 ];
 
 const booksSelectOptions = [
+  { value: "", label: "Filter status" },
   { value: "0", label: "Borrowed" },
-  { value: "1", label: "Unavailable" },
+  { value: "1", label: "Available" },
 ];
 
 const waitlistSelectOptions = [
