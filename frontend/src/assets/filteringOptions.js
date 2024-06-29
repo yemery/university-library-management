@@ -6,7 +6,7 @@ const borrowSelectOptions = [
 ];
 
 const booksSelectOptions = [
-  { value: "", label: "Filter status" },
+  { value: "", label: "All" },
   { value: "0", label: "Borrowed" },
   { value: "1", label: "Available" },
 ];

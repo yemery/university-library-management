@@ -3,23 +3,11 @@ import React from "react";
 import H5 from "../atoms/H5";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import Button from "../atoms/Button";
-// import { set } from "react-datepicker/dist/date_utils";
 const EditBorrowDates = () => {
-  // nested for borrow date and return date
-  // const [dates, setDates] = useState({
-  //   borrowDate: "",
-  //   returnDate: "",
-  // });
-  // useEffect(() => {
-  //   console.log(dates);
-  // }, [dates]);
 
-  // added destructuring for borrow date and return date bcs it was not working
-  // const { borrowDate, returnDate } = dates;
 
   const borrowDate = useSelector((state) => state.borrows.borrow.borrow_date);
   const returnDate = useSelector((state) => state.borrows.borrow.return_date);
@@ -63,8 +51,7 @@ const EditBorrowDates = () => {
           onChange={date => datesForm.setFieldValue('returnDate', date)}
         />
       </div>
-
-      <Button text="Submit" />
+      <Button type="submit" label="Submit" />
     </form>
   );
 };

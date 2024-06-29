@@ -1,3 +1,4 @@
+import { act } from "react";
 import api from "../../services/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -13,11 +14,18 @@ const postBook = createAsyncThunk("books/postBook", async (data) => {
   return response.status;
 });
 
-const booksList = createAsyncThunk("books/", async () => {
+const booksList = createAsyncThunk("books/", async ( params)=> {
+  // could sedn the search filter values here
+  
   const response = await api.get("books/", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
+    // body: Json.stringify(params)
+
+
+
+   
   });
   return response.data;
 });

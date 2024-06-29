@@ -46,6 +46,7 @@ function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
     dispatch(targetBookID(id));
     waitlistModal();
   };
+  
 
   return (
     <div className="mt-10">

@@ -16,10 +16,11 @@ function Books() {
 
   const dispatch = useDispatch();
   const role = useSelector((state) => state.auth.role);
+  const books = useSelector((state) => state.books.books);
 
   useEffect(() => {
     dispatch(booksList());
-  }, []);
+  }, [books.length]);
 
   const handleModal = (content) => {
     setOpenModal(true);

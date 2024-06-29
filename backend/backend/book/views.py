@@ -13,6 +13,21 @@ class BooksList(APIView):
     def get(self, request):
         try:
             books = Book.objects.all().order_by('-created_at')
+            # search by title or author or status 
+            title=request.query_params.get('title',default=None)
+            author=request.query_params.get('author',default=None)
+            status=request.query_params.get('status',default=None)
+            # filter could be multiple values
+            # request example http://api/books/?title=book1&title=book2&author=author1
+            if title is not None:
+                books=books.filter(title__icontains=title)
+            if author is not None:
+                books=books.filter(author__icontains=author)
+            if status is not None:
+                books=books.filter(is_available__icontains=status)
+                
+            
+        
             # perpage by default is 10 no need to gve user to change it
             # perpage=request.query_params.get('perpage',default=1)
             page=request.query_params.get('page',default=1)

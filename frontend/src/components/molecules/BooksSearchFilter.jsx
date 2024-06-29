@@ -5,24 +5,27 @@ import SearchFilter from "../atoms/SearchFilter";
 import SelectFilter from "../atoms/SelectFilter";
 import { booksSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
-
+import { useDispatch } from "react-redux";
+import { booksList } from "../../features/book/bookThunks";
 function BooksSearchFilter() {
+  const dispatch = useDispatch();
+
   const searchFilter = useFormik({
     initialValues: {
-      titlesearch: "",
-      authorsearch: "",
+      title: "",
+      author: "",
       statusFilter: "",
     },
     validationSchema: Yup.object({
-      titlesearch: Yup.string(),
-      authorsearch: Yup.string(),
+      title: Yup.string(),
+      author: Yup.string(),
       statusFilter: Yup.string(),
     }),
     onSubmit: (values) => {
       // check at least one field should be filled
       if (
-        values.titlesearch !== "" ||
-        values.authorsearch !== "" ||
+        values.title !== "" ||
+        values.author !== "" ||
         values.statusFilter !== ""
       ) {
         if (values.statusFilter) {
@@ -31,7 +34,8 @@ function BooksSearchFilter() {
         }
 
         console.log(values);
-        // dispatch(searchFilterBooks(values))
+        dispatch(booksList({title:"vv"}));
+        // console.log(dispatch(booksList(values)));
       }
     },
   });
