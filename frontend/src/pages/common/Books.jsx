@@ -9,18 +9,32 @@ import DeleteBook from "../../components/molecules/DeleteBook";
 import EditBookForm from "../../components/molecules/EditBookForm";
 import BorrowBook from "../../components/molecules/BorrowBook";
 import BooksSearchFilter from "../../components/molecules/BooksSearchFilter";
+import { Pagination } from "flowbite-react";
 
 function Books() {
+  const dispatch = useDispatch();
+  
+  const totalPages=useSelector(state=>state.books.totalPages)
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    // dispatch(booksList({ page: page }));
+  }
   const [openModal, setOpenModal] = useState(false);
   const [modalForm, setModalForm] = useState(null);
 
-  const dispatch = useDispatch();
   const role = useSelector((state) => state.auth.role);
   // const books = useSelector((state) => state.books.books);
 
   useEffect(() => {
-    dispatch(booksList());
-  }, []);
+    dispatch(booksList({ page: currentPage}));
+  }, [currentPage]);
+  // useEffect(() => {
+  //   // console.log("books", books);
+  //   dispatch(booksList({ page: currentPage }));
+  // }, [currentPage]);
 
   const handleModal = (content) => {
     setOpenModal(true);
@@ -62,6 +76,9 @@ function Books() {
         borrowModal={() => handleModal("borrowBook")}
         waitlistModal={() => handleModal("waitlistBook")}
       />
+      <div className="flex overflow-x-auto sm:justify-center">
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+    </div>
     </div>
   );
 }

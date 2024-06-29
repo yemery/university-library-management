@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 
 # Create your views here.
 
-
+import math
 # add borrow book
 class BorrowBook(APIView):
     permission_classes = [IsAuthenticated, IsStudent]
@@ -61,6 +61,10 @@ class BorrowList(APIView):
     def get(self, request):
         
         borrows = book_borrow.objects.all().order_by('-created_at')
+        total_pages= borrows.count()
+            # if number is float we need to ceil it to the next number
+        total_pages=math.ceil(total_pages/10) 
+        print(total_pages)
         title = request.query_params.get('title', None)
         if title:
             title = title.strip()
@@ -78,8 +82,11 @@ class BorrowList(APIView):
             borrows = borrows.filter(book__title__icontains=title)
         
         # using the new serializer 
-        serializer = BorrowDetailSerializer(borrows, many=True)
-        return Response(serializer.data, status=200)
+        # serializer = BorrowDetailSerializer(borrows, many=True)
+        return Response({
+                'borrows': BorrowDetailSerializer(borrows, many=True).data,
+                'total_pages':total_pages
+            }, status=200)
 
     def patch(self, request, pk):
         try:

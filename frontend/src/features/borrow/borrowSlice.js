@@ -5,6 +5,7 @@ const initialState = {
     borrows: [],
     borrowID: 0,
     borrow: {},
+    totalPages : 0
 };
 
 // helper function
@@ -32,7 +33,8 @@ const borrowSlice = createSlice({
     extraReducers: (builder) => {
         // Get all borrows
         builder.addCase(borrowsList.fulfilled, (state, action) => {
-            state.borrows = action.payload;
+            state.borrows = action.payload.borrows;
+            state.totalPages = action.payload.total_pages;
         });
         builder.addCase(borrowsList.rejected, (action) => {
             console.log("rejected", action);

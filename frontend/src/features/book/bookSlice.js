@@ -5,6 +5,7 @@ const initialState = {
   books: [],
   bookID: 0,
   book: {},
+  totalPages : 0
 };
 
 const bookSlice = createSlice({
@@ -30,8 +31,8 @@ const bookSlice = createSlice({
 
     // Get all books
     builder.addCase(booksList.fulfilled, (state, action) => {
-      state.books = action.payload;
-      console.log("books", state.books);
+      state.books = action.payload.books;
+      state.totalPages = action.payload.total_pages;
     });
     builder.addCase(booksList.rejected, (action) => {
       console.log("rejected", action);

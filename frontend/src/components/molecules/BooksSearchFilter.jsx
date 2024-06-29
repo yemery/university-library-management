@@ -14,48 +14,48 @@ function BooksSearchFilter() {
     initialValues: {
       title: "",
       author: "",
-      statusFilter: "",
+      status: "",
     },
     validationSchema: Yup.object({
       title: Yup.string(),
       author: Yup.string(),
-      statusFilter: Yup.string(),
+      status: Yup.string(),
     }),
     onSubmit: (values) => {
-      // check at least one field should be filled
-      if (
-        values.title !== "" ||
-        values.author !== "" ||
-        values.statusFilter !== ""
-      ) {
-        if (values.statusFilter) {
-          // if statusFilter is 1, then its value is true (available), else false (borrowed
-          values.statusFilter = values.statusFilter == "1";
-        }
-
-        console.log(values);
-        dispatch(booksList({title:"vv"}));
-        // console.log(dispatch(booksList(values)));
+      const filters = {}
+      if (values.title != "") {
+        filters.title = values.title
       }
+      if (values.author != "") {
+        filters.author = values.author
+      }
+      if (values.status != "") {
+        filters.status = values.status
+      }
+      dispatch(booksList(filters));
     },
   });
+  const handleClearBooks = () => {
+    searchFilter.resetForm();
+    dispatch(booksList());
+  }
   return (
     <form className="flex gap-8" onSubmit={searchFilter.handleSubmit}>
       <SearchFilter
         search="title"
-        name="titlesearch"
-        value={searchFilter.values.titlesearch}
+        name="title"
+        value={searchFilter.values.title}
         change={searchFilter.handleChange}
       />
       <SearchFilter
         search="author"
-        name="authorsearch"
-        value={searchFilter.values.authorsearch}
+        name="author"
+        value={searchFilter.values.author}
         change={searchFilter.handleChange}
       />
       <SelectFilter
-        name="statusFilter"
-        value={searchFilter.values.statusFilter}
+        name="status"
+        value={searchFilter.values.status}
         change={searchFilter.handleChange}
         options={booksSelectOptions}
       />
@@ -75,6 +75,9 @@ function BooksSearchFilter() {
             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
           />
         </svg>
+      </Button>
+      <Button className="bg-black" type="submit" onClick={handleClearBooks}>
+       clear
       </Button>
     </form>
   );

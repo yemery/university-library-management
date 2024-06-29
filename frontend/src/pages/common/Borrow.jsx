@@ -9,6 +9,7 @@ import ShowBorrow from "../../components/molecules/ShowBorrow";
 import EditBorrow from "../../components/molecules/EditBorrow";
 import EditBorrowDates from "../../components/molecules/EditBorrowDates";
 import BorrowsSearchFilter from "../../components/molecules/BorrowsSearchFilter";
+import { Pagination } from "flowbite-react";
 
 function Borrow() {
   const dispatch = useDispatch();
@@ -33,7 +34,14 @@ function Borrow() {
     editBorrow: <EditBorrow/>,
     editBorrowDates: <EditBorrowDates />,
   };
+  const totalPages=useSelector(state=>state.borrows.totalPages)
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    // dispatch(booksList({ page: page }));
+  }
   return (
     <div>
       <div className="flex flex-col gap-8">
@@ -54,7 +62,9 @@ function Borrow() {
         editModal={() => handleModal("editBorrow")}
         editModalDates={() => handleModal("editBorrowDates")}
       />
-
+    <div className="flex overflow-x-auto sm:justify-center">
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+    </div>
       <ModalContainer
         openModal={openModal}
         setOpenModal={() => setOpenModal(false)}

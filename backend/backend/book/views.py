@@ -6,13 +6,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Book
 from .serializers import BookSerializer
-
+import math
 from django.core.paginator import Paginator,EmptyPage
 @permission_classes([IsAuthenticated])
 class BooksList(APIView):
     def get(self, request):
         try:
             books = Book.objects.all().order_by('-created_at')
+            # total pages for the paginator in the frontend
+            total_pages=books.count()
+            # if number is float we need to ceil it to the next number
+            total_pages=math.ceil(total_pages/10) 
+            # print(total_pages)
             # search by title or author or status 
             title=request.query_params.get('title',default=None)
             author=request.query_params.get('author',default=None)
@@ -41,7 +46,10 @@ class BooksList(APIView):
                     'error': 'No books found'
                 }, status=404)
             # return list of objects 
-            return Response(BookSerializer(books, many=True).data, status=200)
+            return Response({
+                'books': BookSerializer(books,many=True).data,
+                'total_pages':total_pages
+            }, status=200)
 
         except Book.DoesNotExist : 
             return Response({
