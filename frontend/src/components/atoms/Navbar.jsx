@@ -42,9 +42,11 @@ function Navbars() {
           Flowbite React
         </span> */}
       </Navbar.Brand>
-      <div className="flex md:order-2">
+      {/* drop down with z-index in front */}
+      <div className="flex md:order-2">  
         <Dropdown
           arrowIcon={false}
+          className="z-40"
           inline
           label={
             <Avatar

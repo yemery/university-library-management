@@ -10,6 +10,7 @@ import SearchFilter from "../../components/atoms/SearchFilter";
 import BorrowsTable from "../../components/atoms/BorrowsTable";
 import ShowBorrow from "../../components/molecules/ShowBorrow";
 import EditBorrow from "../../components/molecules/EditBorrow";
+import EditBorrowDates from "../../components/molecules/EditBorrowDates";
 
 function Borrow() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function Borrow() {
   const contents = {
     showBorrow: <ShowBorrow />,
     editBorrow: <EditBorrow />,
+    editBorrowDates: <EditBorrowDates />,
   };
 
   return (
@@ -64,6 +66,7 @@ function Borrow() {
         <BorrowsTable
           showModal ={()=>handleModal("showBorrow")}
           editModal={() => handleModal("editBorrow")}
+          editModalDates={() => handleModal("editBorrowDates")}
         />
 
       <ModalContainer

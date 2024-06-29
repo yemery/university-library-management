@@ -13,8 +13,8 @@ import {
   targetBorrow,
   targetBorrowID,
 } from "../../features/borrow/borrowSlice";
-
-function BorrowsTable({ showModal, editModal }) {
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+function BorrowsTable({ showModal, editModal,editModalDates }) {
   const borrows = useSelector((state) => state.borrows.borrows);
   const dispatch = useDispatch();
 
@@ -27,7 +27,10 @@ function BorrowsTable({ showModal, editModal }) {
     dispatch(targetBorrowID(id));
     editModal();
   };
- 
+  const handleEditDates = (id) => {
+    dispatch(targetBorrowID(id));
+    editModalDates();
+  }
 
   return (
     <div className="mt-10">
@@ -68,6 +71,10 @@ function BorrowsTable({ showModal, editModal }) {
                     onClick={() => handleShow(borrow)}
                   />
                   <MdModeEdit
+                    className="cursor-pointer"
+                    onClick={() => handleEditDates(borrow.id)}
+                  />
+                  <HiOutlineDotsHorizontal
                     className="cursor-pointer"
                     onClick={() => handleEdit(borrow.id)}
                   />

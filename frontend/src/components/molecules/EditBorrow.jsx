@@ -6,7 +6,6 @@ import {
   confirmBorrow,
 } from "../../features/borrow/borrowThunks";
 import { Button } from "flowbite-react";
-
 function EditBorrow() {
   const borrowID = useSelector((state) => state.borrows.borrowID);
   const dispatch = useDispatch();
@@ -31,16 +30,18 @@ function EditBorrow() {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <h2 class="text-xl font-medium text-gray-900 text-center">
-        updating the borrow status
-      </h2>
+  
+    <div className="text-center">
+      {/* <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" /> */}
+      <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+        Confirm or cancel the borrow request
+      </h3>
       <div className="flex justify-center gap-4">
-        <Button color="success" onClick={borrowConfirmation}>
-          confirm borrow
+        <Button color="gray" onClick={borrowCancellation}>
+          No, cancel
         </Button>
-        <Button color="failure" onClick={borrowCancellation}>
-          cancel borrow
+        <Button className="bg-blue-500 hover:bg-blue-400" onClick={borrowConfirmation}>
+          Yes, confirm
         </Button>
       </div>
     </div>
