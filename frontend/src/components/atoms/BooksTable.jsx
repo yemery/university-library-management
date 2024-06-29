@@ -74,12 +74,7 @@ function BooksTable({ editModal, deleteModal }) {
                     />
                   </div>
                 ) : (
-                  <a
-                    href="#"
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                  >
-                    Borrow
-                  </a>
+                  book.is_available ? "borrow" : "wait list"
                 )}
               </TableCell>
             </TableRow>

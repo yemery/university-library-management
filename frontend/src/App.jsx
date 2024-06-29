@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/common/Login";
 // import LibrarianDashboard from "./pages/librarian/Dashboard";
 import AppLayout from "./layouts/AppLayout";
-import Books from "./pages/librarian/Books";
+import Books from "./pages/common/Books";
 import Borrow from "./pages/librarian/Borrow";
 import WaitingList from "./pages/librarian/WaitingList";
 import Profile from "./pages/common/Profile";
@@ -16,7 +16,6 @@ import Unauthorized from "./pages/common/Unauthorized";
 import Dashboard from "./pages/librarian/Dashboard";
 // import {Dashboard as AdminDashboard} from "./pages/admin/Dashboard";
 
-
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -24,8 +23,8 @@ export default function App() {
       element: <Login />,
     },
     {
-      path:'/Unauthorized',
-      element:<Unauthorized/>
+      path: "/Unauthorized",
+      element: <Unauthorized />,
     },
     {
       path: "/",
@@ -65,6 +64,7 @@ export default function App() {
             },
             {
               path: "profile",
+              element: <Auth component={Profile} />,
               // element: <authMiddleware component={Profile} />,
             },
           ],
@@ -80,13 +80,15 @@ export default function App() {
           ],
         },
         {
-          path:'student',
-          children:[
+          path: "student",
+          children: [
             {
-              path:'dashboard',
+              path: "dashboard",
               // element: <Auth component={StudentDashboard}/>
-        }]
-        }
+            },
+            { path: "books", element: <Auth component={Books} /> },
+          ],
+        },
       ],
     },
   ]);

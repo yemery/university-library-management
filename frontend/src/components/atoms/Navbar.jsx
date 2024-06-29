@@ -1,6 +1,11 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Logo from "./Logo";
-import { dropDownItems, librarianNavLinks, studentLinks, adminNavLinks} from "../../assets/navigationLinks";
+import {
+  dropDownItems,
+  librarianNavLinks,
+  studentLinks,
+  adminNavLinks,
+} from "../../assets/navigationLinks";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -8,26 +13,29 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 function Navbars() {
-  const role = useSelector((state) => state.auth.role );
-  const NavLinks = role == "librarian" ? librarianNavLinks : role == "admin" ? adminNavLinks : studentLinks;
+  const role = useSelector((state) => state.auth.role);
+  const user = useSelector((state) => state.auth.user);
+
+  const NavLinks =
+    role == "librarian"
+      ? librarianNavLinks
+      : role == "admin"
+      ? adminNavLinks
+      : studentLinks;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const handleLogout = ()=>{
-    dispatch(logout());
-    navigate('/');
 
-    
-  }
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
+  const navigateToProfile = () => navigate(`/${role}/profile`);
   return (
-        <Navbar fluid rounded className="fixed w-full">
+    <Navbar fluid rounded className="fixed w-full">
       <Navbar.Brand href="/">
         {/* fix logo component not appearing later !! */}
-        <img
-          src="/logo.svg"
-          className="w-12 h-12"
-          alt="Flowbite React Logo"
-        />
+        <img src="/logo.svg" className="w-12 h-12" alt="Flowbite React Logo" />
         {/* <Logo/> */}
         {/* <Logo/> */}
         {/* <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
@@ -49,16 +57,15 @@ function Navbars() {
         >
           <Dropdown.Header>
             {/* later with redux we will add curring connected user */}
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{user.first_name} {user.last_name}</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {user.email}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Profile</Dropdown.Item>
+          <Dropdown.Item onClick={navigateToProfile}>Profile</Dropdown.Item>
           <Dropdown.Item>Settings</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
-          
         </Dropdown>
         <Navbar.Toggle />
       </div>
@@ -71,7 +78,9 @@ function Navbars() {
               to={`${role}/${link.path}`}
               key={link.path}
               className={({ isActive }) => {
-                return isActive ? "text-black font-semibold" : "text-gray-600 font-normal";
+                return isActive
+                  ? "text-black font-semibold"
+                  : "text-gray-600 font-normal";
               }}
             >
               {link.label}
@@ -79,9 +88,7 @@ function Navbars() {
           );
         })}
 
-        {
-
-        }
+        {}
         {/* <Navbar.Link href="#" active>
           Home
         </Navbar.Link>

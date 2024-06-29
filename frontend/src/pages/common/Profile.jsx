@@ -1,9 +1,11 @@
+import { useSelector } from "react-redux";
+
 const Profile = () => {
+  const user = useSelector((state) => state.auth.user);
   const userInfo = {
-    name: "John Doe",
-    email: "john@mail.com",
-    role: "Librarian",
-    campus: "Main Campus",
+    "first name": user.first_name,
+    "last name": user.last_name,
+    email: user.email,
   };
   // pay attention for naming in redux & api resonse cus we'll use keys in labels
 
@@ -15,7 +17,7 @@ const Profile = () => {
           return (
             <div key={value} className="flex flex-col">
               <label
-                for="base-input"
+                htmlFor="base-input"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 {key}
