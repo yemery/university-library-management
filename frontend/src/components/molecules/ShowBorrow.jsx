@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "flowbite-react";
 
-function ShowBorrow() {
+function ShowBorrow({role}) {
   const borrow = useSelector((state) => state.borrows.borrow);
 
   return (
@@ -71,9 +71,8 @@ function ShowBorrow() {
             </TableRow>
           </TableBody>
         </Table>
-       
-      </div>
-      <div className="space-y-4">
+       {role === "librarian" && (
+        <div className="space-y-4">
         <h5 className="font-semibold text-sm">Student information</h5>
         <Table>
           <TableHead>
@@ -93,6 +92,9 @@ function ShowBorrow() {
         </Table>
        
       </div>
+       )}
+      </div>
+      
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { borrowsList, confirmBorrow, cancelBorrow } from "./borrowThunks";
+import { borrowsList, confirmBorrow, cancelBorrow, studentBorrows } from "./borrowThunks";
 
 const initialState = {
     borrows: [],
@@ -46,6 +46,14 @@ const borrowSlice = createSlice({
         // Cancel a borrow
         builder.addCase(cancelBorrow.fulfilled, (state, action) => {
             updateBorrow(state, action);
+        });
+
+        // Get a student's borrows
+        builder.addCase(studentBorrows.fulfilled, (state, action) => {
+            state.borrows = action.payload;
+        });
+        builder.addCase(studentBorrows.rejected, (action) => {
+            console.log("rejected", action);
         });
     },
 });

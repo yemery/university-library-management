@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { targetBorrow, targetBorrowID } from "../../features/borrow/borrowSlice";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
-function BorrowsTable({ showModal, editModal,editModalDates }) {
+function BorrowsTable({ role, showModal, editModal,editModalDates }) {
   const borrows = useSelector((state) => state.borrows.borrows);
   const dispatch = useDispatch();
 
@@ -62,14 +62,20 @@ function BorrowsTable({ showModal, editModal,editModalDates }) {
                     className="cursor-pointer"
                     onClick={() => handleShow(borrow)}
                   />
-                  <MdModeEdit
-                    className="cursor-pointer"
-                    onClick={() => handleEditDates(borrow)}
-                  />
+
+                  {role === "librarian" && (
+                    <>
+                    <MdModeEdit
+                      className="cursor-pointer"
+                      onClick={() => handleEditDates(borrow)}
+                      />
                   <HiOutlineDotsHorizontal
                     className="cursor-pointer"
                     onClick={() => handleEdit(borrow.id)}
                   />
+                    </>
+                  )}
+                  
                 </div>
               </TableCell>
             </TableRow>

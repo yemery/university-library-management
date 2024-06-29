@@ -3,7 +3,7 @@ import Login from "./pages/common/Login";
 // import LibrarianDashboard from "./pages/librarian/Dashboard";
 import AppLayout from "./layouts/AppLayout";
 import Books from "./pages/common/Books";
-import Borrow from "./pages/librarian/Borrow";
+import Borrow from "./pages/common/Borrow";
 import WaitingList from "./pages/librarian/WaitingList";
 import Profile from "./pages/common/Profile";
 // import AdminDashboard from "./pages/admin/Dashboard";
@@ -87,6 +87,7 @@ export default function App() {
               // element: <Auth component={StudentDashboard}/>
             },
             { path: "books", element: <Auth component={Books} /> },
+            { path: "borrows", element: <Auth component={Borrow} /> },
           ],
         },
       ],

@@ -12,7 +12,7 @@ const adminNavLinks = [
 const studentLinks = [
   { path: "dashboard", label: "dashboard" },
   { path: "books", label: "books" },
-  { path: "faq", label: "faq" },
+  { path: "borrows", label: "my borrows" },
 ];
 
 const dropDownItems = [

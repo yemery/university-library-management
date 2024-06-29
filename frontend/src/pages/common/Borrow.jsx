@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { borrowsList } from "../../features/borrow/borrowThunks";
+import { useDispatch, useSelector } from "react-redux";
+import { borrowsList, studentBorrows } from "../../features/borrow/borrowThunks";
 import { Button } from "flowbite-react";
 import ModalContainer from "../../components/molecules/ModalContainer";
 import BorrowsTable from "../../components/atoms/BorrowsTable";
@@ -13,9 +13,11 @@ import BorrowsSearchFilter from "../../components/molecules/BorrowsSearchFilter"
 function Borrow() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const role = useSelector((state) => state.auth.role);
   useEffect(() => {
-    dispatch(borrowsList());
+    role == "librarian" && dispatch(borrowsList());
+
+    role == "student" && dispatch(studentBorrows());
   }, []);
 
   const [openModal, setOpenModal] = useState(false);
@@ -27,8 +29,8 @@ function Borrow() {
   };
 
   const contents = {
-    showBorrow: <ShowBorrow />,
-    editBorrow: <EditBorrow />,
+    showBorrow: <ShowBorrow role={role} />,
+    editBorrow: <EditBorrow/>,
     editBorrowDates: <EditBorrowDates />,
   };
 
@@ -47,6 +49,7 @@ function Borrow() {
         <BorrowsSearchFilter />
       </div>
       <BorrowsTable
+        role={role}
         showModal={() => handleModal("showBorrow")}
         editModal={() => handleModal("editBorrow")}
         editModalDates={() => handleModal("editBorrowDates")}

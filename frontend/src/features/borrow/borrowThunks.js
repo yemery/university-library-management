@@ -52,4 +52,13 @@ const borrowABook = createAsyncThunk("/borrows/borrow", async (id) => {
 //   return response.data;
 // });
 
-export { borrowsList, confirmBorrow, cancelBorrow, borrowABook };
+const studentBorrows = createAsyncThunk("/borrows/user/", async () => {
+  const response = await api.get(`borrows/user/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+});
+
+export { borrowsList, confirmBorrow, cancelBorrow, borrowABook, studentBorrows };
