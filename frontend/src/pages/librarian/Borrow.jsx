@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { borrowSelectOptions } from "../../assets/filteringOptions";
 import { useDispatch } from "react-redux";
 import { borrowsList } from "../../features/borrow/borrowThunks";
-import { Button, Select } from "flowbite-react";
+import { Button } from "flowbite-react";
 import ModalContainer from "../../components/molecules/ModalContainer";
-import SelectFilter from "../../components/atoms/SelectFilter";
-import SearchFilter from "../../components/atoms/SearchFilter";
 import BorrowsTable from "../../components/atoms/BorrowsTable";
 import ShowBorrow from "../../components/molecules/ShowBorrow";
 import EditBorrow from "../../components/molecules/EditBorrow";
 import EditBorrowDates from "../../components/molecules/EditBorrowDates";
+import BorrowsSearchFilter from "../../components/molecules/BorrowsSearchFilter";
 
 function Borrow() {
   const dispatch = useDispatch();
@@ -36,16 +34,9 @@ function Borrow() {
 
   return (
     <div>
-      <div className="flex gap-8 flex-wrap">
-        {/* <Button
-          className="w-80 bg-black hover:opacity-75  text-white"
-          onClick={() => handleModal("addBook")}
-        >
-          Add borrow
-        </Button> */}
-
+      <div className="flex flex-col gap-8">
         <Button
-          className="bg-black"
+          className="w-80 bg-black  hover:opacity-75 text-white"
           onClick={() => {
             navigate("waiting-list");
           }}
@@ -53,21 +44,13 @@ function Borrow() {
           waiting list
         </Button>
 
-        {/* <form action="" method="post">
-          <Select id="countries" required className="w-80">
-            <option value="waiting">Waiting</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="delivered">Delivered</option>
-          </Select>
-        </form> */}
-        <SelectFilter options={borrowSelectOptions} />
-        <SearchFilter />
+        <BorrowsSearchFilter />
       </div>
-        <BorrowsTable
-          showModal ={()=>handleModal("showBorrow")}
-          editModal={() => handleModal("editBorrow")}
-          editModalDates={() => handleModal("editBorrowDates")}
-        />
+      <BorrowsTable
+        showModal={() => handleModal("showBorrow")}
+        editModal={() => handleModal("editBorrow")}
+        editModalDates={() => handleModal("editBorrowDates")}
+      />
 
       <ModalContainer
         openModal={openModal}

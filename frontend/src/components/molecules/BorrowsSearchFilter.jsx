@@ -3,35 +3,30 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import SearchFilter from "../atoms/SearchFilter";
 import SelectFilter from "../atoms/SelectFilter";
-import { booksSelectOptions } from "../../assets/filteringOptions";
+import { borrowSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
 
-function BooksSearchFilter() {
+function BorrowsSearchFilter() {
   const searchFilter = useFormik({
     initialValues: {
       titlesearch: "",
-      authorsearch: "",
+      studentSearch: "",
       statusFilter: "",
     },
     validationSchema: Yup.object({
       titlesearch: Yup.string(),
-      authorsearch: Yup.string(),
+      studentSearch: Yup.string(),
       statusFilter: Yup.string(),
     }),
     onSubmit: (values) => {
       // check at least one field should be filled
       if (
         values.titlesearch !== "" ||
-        values.authorsearch !== "" ||
+        values.studentSearch !== "" ||
         values.statusFilter !== ""
       ) {
-        if (values.statusFilter) {
-          // if statusFilter is 1, then its value is true (available), else false (borrowed
-          values.statusFilter = values.statusFilter == "1";
-        }
-
         console.log(values);
-        // dispatch(searchFilterBooks(values))
+        // dispatch(searchFilterBorrows(values))
       }
     },
   });
@@ -45,15 +40,15 @@ function BooksSearchFilter() {
       />
       <SearchFilter
         search="author"
-        name="authorsearch"
-        value={searchFilter.values.authorsearch}
+        name="studentSearch"
+        value={searchFilter.values.studentSearch}
         change={searchFilter.handleChange}
       />
       <SelectFilter
         name="statusFilter"
         value={searchFilter.values.statusFilter}
         change={searchFilter.handleChange}
-        options={booksSelectOptions}
+        options={borrowSelectOptions}
       />
       <Button className="bg-black" type="submit">
         <svg
@@ -76,4 +71,4 @@ function BooksSearchFilter() {
   );
 }
 
-export default BooksSearchFilter;
+export default BorrowsSearchFilter;

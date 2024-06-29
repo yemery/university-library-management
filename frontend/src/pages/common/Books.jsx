@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { booksList } from "../../features/book/bookThunks";
-import { booksSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
 import ModalContainer from "../../components/molecules/ModalContainer";
 import AddBookForm from "../../components/molecules/AddBookForm";
-import SelectFilter from "../../components/atoms/SelectFilter";
-import SearchFilter from "../../components/atoms/SearchFilter";
 import BooksTable from "../../components/atoms/BooksTable";
 import DeleteBook from "../../components/molecules/DeleteBook";
 import EditBookForm from "../../components/molecules/EditBookForm";
@@ -49,9 +46,7 @@ function Books() {
           </Button>
         )}
 
-        {/* <SelectFilter options={booksSelectOptions} />
-        <SearchFilter /> */}
-        <BooksSearchFilter  />
+        <BooksSearchFilter />
       </div>
       <ModalContainer
         openModal={openModal}

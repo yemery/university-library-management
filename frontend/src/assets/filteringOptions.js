@@ -1,7 +1,8 @@
 const borrowSelectOptions = [
-  { value: "waiting", label: "Waiting" },
+  { value: "", label: "Filter status" },
+  { value: "pending", label: "Pending" },
   { value: "confirmed", label: "Confirmed" },
-  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 
 const booksSelectOptions = [
