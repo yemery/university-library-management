@@ -262,3 +262,32 @@ class NonReturnedBorrows(APIView):
         return Response({
             'count':count
         },status=200)
+
+# - number of my borrows (number w sf)
+class MyBorrows(APIView):
+    permission_classes=[IsAuthenticated,IsStudent]
+    def get(self, request):
+        borrows = book_borrow.objects.filter(user=request.user)
+        count=borrows.count()
+        return Response({
+            'count':count
+        },status=200)
+        
+    
+# - my borrows status by status by authenticated student
+class MyBorrowsStatus(APIView):
+    permission_classes=[IsAuthenticated,IsStudent]
+    def get(self, request):
+        borrows = book_borrow.objects.filter(user=request.user)
+        status_list = []
+        status_list.append(["Status", "Count"])
+
+        count_pending = borrows.filter(status="pending").count()
+        count_confirmed = borrows.filter(status="confirmed").count()
+        count_cancelled = borrows.filter(status="cancelled").count()
+
+        status_list.append(["Pending", count_pending])
+        status_list.append(["Confirmed", count_confirmed])
+        status_list.append(["Cancelled", count_cancelled])
+
+        return Response(status_list, status=status.HTTP_200_OK)
