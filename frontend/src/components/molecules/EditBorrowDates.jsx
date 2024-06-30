@@ -30,7 +30,7 @@ const EditBorrowDates = () => {
   return (
     <form className="space-y-7" onSubmit={datesForm.handleSubmit}>
       <H5 label="Edit Borrow Dates" />
-      <div className="space-y-3">
+      <div className="space-y-3 ">
         <H5 label="Edit Borrow Date" />
 
         {/* <DatePicker selected={borrowDate} onSelect={(date) => setDates({ ...dates, borrowDate: date })  } /> */}
@@ -51,7 +51,7 @@ const EditBorrowDates = () => {
           onChange={date => datesForm.setFieldValue('returnDate', date)}
         />
       </div>
-      <Button type="submit" label="Submit" />
+      <Button text="Submit" type="submit" />
     </form>
   );
 };

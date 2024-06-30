@@ -4,6 +4,7 @@ import { MdModeEdit, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { targetBorrow, targetBorrowID } from "../../features/borrow/borrowSlice";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { Badge } from "flowbite-react";
 
 function BorrowsTable({ role, showModal, editModal,editModalDates }) {
   const borrows = useSelector((state) => state.borrows.borrows);
@@ -49,7 +50,13 @@ function BorrowsTable({ role, showModal, editModal,editModalDates }) {
               <TableCell>
                 {borrow.user.first_name} {borrow.user.last_name}
               </TableCell>
-              <TableCell>{borrow.status}</TableCell>
+              <TableCell >
+                {borrow.status == "cancelled" && <Badge color="failure" className="w-fit">Cancelled</Badge> }
+                {borrow.status == "pending" && <Badge color="warning" className="w-fit">pending</Badge> }
+                {borrow.status == "confirmed" && <Badge color="success" className="w-fit">confirmed</Badge> }
+
+                
+              </TableCell>
               <TableCell>
                 {borrow.borrow_date ? `${new Date(borrow.borrow_date).toLocaleDateString('en-GB')}` : "null"}
               </TableCell>

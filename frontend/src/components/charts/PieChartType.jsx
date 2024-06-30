@@ -1,14 +1,16 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import H5 from "../atoms/H5";
 
 function PieChartType({ stat }) {
   const options = {
-    legend: { position: "none" }, // hide the legend
+    // legend: { position: "none" }, // hide the legend
   };
   return (
-    <div className="flex flex-col items-center gap-4 w-1/2">
-      <p className="font-semibold">{stat.title}</p>
-      <Chart
+    <div className="flex flex-col gap-4 w-1/2">
+     
+        <H5 label={stat.title} /> 
+        <Chart
         chartType="PieChart"
         width="100%"
         height="250px"

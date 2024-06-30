@@ -19,7 +19,13 @@ function Dashboard() {
   const borrowsStat = useSelector((state) => state.stats.borrowsStatus);
 
   return (
-    <div className="grid grid-cols-2 gap-8 place-items-center justify-center">
+    // <div className="grid grid-cols-2 gap-8 place-items-center justify-center">
+    //   <BarChartType stat={mostBorrowed} />
+    //   <BarChartType stat={mostStudents} />
+    //   <PieChartType stat={availabilityStat} />
+    //   <PieChartType stat={borrowsStat} />
+    // </div>
+    <div className="grid grid-cols-2 gap-2">
       <BarChartType stat={mostBorrowed} />
       <BarChartType stat={mostStudents} />
       <PieChartType stat={availabilityStat} />

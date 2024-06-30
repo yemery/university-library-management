@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-
+import { GiHamburgerMenu } from "react-icons/gi";
 function Navbars() {
   const role = useSelector((state) => state.auth.role);
   const user = useSelector((state) => state.auth.user);
@@ -39,7 +39,7 @@ function Navbars() {
           arrowIcon={false}
           className="z-40"
           inline
-          label={<Avatar alt="User settings" img="/menu.svg" />}
+          label={<GiHamburgerMenu size={25} />}
         >
           <Dropdown.Header>
             <span className="block text-sm">

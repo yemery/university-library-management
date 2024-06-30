@@ -7,6 +7,8 @@ import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import { updateBook } from "../../features/book/bookThunks";
 import { useNavigate } from "react-router-dom";
+import H5 from "../atoms/H5";
+import { Label, Select } from "flowbite-react";
 
 function EditupdateForm() {
   const dispatch = useDispatch();
@@ -47,9 +49,7 @@ function EditupdateForm() {
   return (
     <form onSubmit={updateForm.handleSubmit}>
       <div className="space-y-6">
-        <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-          add new book
-        </h3>
+        <H5 label={"Edit Book"} />
         <div>
           <Input
             label="title"
@@ -106,20 +106,21 @@ function EditupdateForm() {
             <ErrorMessage message={updateForm.errors.gender} />
           )}
         </div>
-        <select
+        <Select
           id="is_available"
           name="is_available"
           value={updateForm.values.is_available}
           onChange={updateForm.handleChange}
           onBlur={updateForm.handleBlur}
         >
-          <option value="1" selected={updateForm.values.is_available == true}>
+         <option value="1" selected={updateForm.values.is_available == true}>
             Available
           </option>
           <option value="0" selected={updateForm.values.is_available == false}>
             Borrowed
           </option>
-        </select>
+        </Select>
+       
         {updateForm.touched.is_available && updateForm.errors.is_available && (
           <ErrorMessage message={updateForm.errors.is_available} />
         )}

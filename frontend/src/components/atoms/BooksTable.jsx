@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import { targetBook, targetBookID } from "../../features/book/bookSlice";
+import { Badge } from "flowbite-react";
 
 function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
   const books = useSelector((state) => state.books.books);
@@ -74,7 +75,7 @@ function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
               <TableCell>{book.description}</TableCell>
               <TableCell>{book.gender}</TableCell>
               <TableCell>
-                {book.is_available ? "available" : "borrowed"}
+                {book.is_available ? <Badge color="info">Available</Badge> : <Badge color="failure">Borrowed</Badge>}
               </TableCell>
               <TableCell>
                 {checkRole() ? (
