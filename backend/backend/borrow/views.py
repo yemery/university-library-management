@@ -7,13 +7,14 @@ from book.models import Book
 from book.serializers import BookSerializer 
 from .models import book_borrow
 from .serializers import BorrowSerializer , BorrowDetailSerializer
-from custom_user.permissions import IsStudent, IsLibrarian
+from custom_user.permissions import IsStudent, IsLibrarian, IsAdmin
 from custom_user.models import User
 from book.models import Book
 from book.serializers import BookSerializer
 from custom_user.serializers import UserSerializer
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.paginator import Paginator,EmptyPage
 
 # Create your views here.
 
@@ -83,6 +84,14 @@ class BorrowList(APIView):
         
         # using the new serializer 
         # serializer = BorrowDetailSerializer(borrows, many=True)
+        page=request.query_params.get('page',default=1)
+        paginator=Paginator(borrows,per_page=10)
+        try:
+            borrows=paginator.page(number=page)
+        except EmptyPage: 
+                return Response({
+                    'error': 'No borrows found'
+                }, status=404)
         return Response({
                 'borrows': BorrowDetailSerializer(borrows, many=True).data,
                 'total_pages':total_pages
@@ -171,3 +180,21 @@ class CancelBorrow(APIView):
             return Response(
                 {"error": "Borrow not found"}, status=status.HTTP_404_NOT_FOUND
             )
+# get most borrowed books for chart visualization
+class MostBorrowedBooks(APIView):
+    permission_classes = [IsAuthenticated, IsLibrarian] # IsAdmin not working
+
+    def get(self, request):
+        borrows = book_borrow.objects.all()
+        books = Book.objects.all()
+        book_list = []
+        book_list.append(["Book Title", "Borrow Count"])
+
+        
+        for book in books:
+            count = borrows.filter(book=book, status="confirmed").count()
+            # if the book cout is above 0 and the book_list is less than 10 append the book to the list
+            if count > 0 and len(book_list) < 6:
+                book_list.append([book.title, count])
+        # book_list.sort(key=lambda x: x[1], reverse=True)
+        return Response(book_list, status=status.HTTP_200_OK)
