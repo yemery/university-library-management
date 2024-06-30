@@ -7,9 +7,6 @@ const borrowsList = createAsyncThunk("borrows/", async (params) => {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
     params: params,
-    // params: {
-    //   title:"ccc"
-    // }
   });
   return response.data;
 });
@@ -65,5 +62,10 @@ const studentBorrows = createAsyncThunk("/borrows/user/", async () => {
   return response.data;
 });
 
-
-export { borrowsList, confirmBorrow, cancelBorrow, borrowABook, studentBorrows };
+export {
+  borrowsList,
+  confirmBorrow,
+  cancelBorrow,
+  borrowABook,
+  studentBorrows,
+};

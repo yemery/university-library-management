@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import TestChart from '../../components/charts/TestChart'
-import api from '../../services/api'
+import React, { useEffect } from "react";
+import BarChartType from "../../components/charts/BarChartType";
+import { useDispatch, useSelector } from "react-redux";
+import { mostBorrowedBooks } from "../../features/stats/statsThunks";
 
 function Dashboard() {
-  const [data, setData] = useState([])
- useEffect(() => {
-  api.get('/borrows/most-borrowed/',
-  {headers: {
-    'Authorization': `Bearer ${localStorage.getItem('access')}`
-  }}
-  )
-  .then(response => setData(response.data))
+  const mostBorrowed = useSelector((state) => state.stats.mostBorrowedBooks);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(mostBorrowedBooks());
+  }, []);
 
- } , [])
   return (
-    <div className="w-[500px]">
-      <TestChart data={data}/>
+    <div className="">
+      <BarChartType stat={mostBorrowed} />
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
