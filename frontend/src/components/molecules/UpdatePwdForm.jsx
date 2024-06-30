@@ -1,67 +1,98 @@
 import React from "react";
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
+
 const UpdatePwdForm = () => {
   const passwordUpdate = useFormik({
     initialValues: {
       currentPassword: "",
+      newPassword: "", // Added new field for newPassword
       confirmPassword: "",
     },
     validationSchema: Yup.object({
-      currentPassword: Yup.string().required("Required").min(8, "Min 8 characters"),
+      currentPassword: Yup.string()
+        .required("Required")
+        .min(8, "Min 8 characters"),
+      newPassword: Yup.string() // Validation for newPassword
+        .required("Required")
+        .min(8, "Min 8 characters"),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("currentPassword"), null], "Passwords does not match")
+        .oneOf([Yup.ref("newPassword"), null], "Passwords does not match")
         .required("Required"),
     }),
     onSubmit: (values) => {
       console.log(values);
     },
   });
+
   return (
     <form
-      className="flex max-w-md flex-col gap-4"
+      className="flex max-w-md flex-col gap-4 mx-auto"
       onSubmit={passwordUpdate.handleSubmit}
     >
+      <h2 className="text-center text-2xl font-bold mb-4">Update Password</h2>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="password" value="Your password" />
+          <Label htmlFor="currentPassword" value="Your current password" />
         </div>
         <TextInput
-          id="password"
+          id="currentPassword"
           type="password"
           name="currentPassword"
-          placeholder="current password"
+          placeholder="Current password"
           value={passwordUpdate.values.currentPassword}
           onChange={passwordUpdate.handleChange}
           onBlur={passwordUpdate.handleBlur}
         />
         {passwordUpdate.touched.currentPassword &&
-            passwordUpdate.errors.currentPassword && (
-              <ErrorMessage message={passwordUpdate.errors.currentPassword} />
-            )}
+          passwordUpdate.errors.currentPassword && (
+            <ErrorMessage message={passwordUpdate.errors.currentPassword} />
+          )}
       </div>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="confirmation" value="Your password confirmation" />
+          <Label htmlFor="newPassword" value="Your new password" />
         </div>
         <TextInput
-          id="confirmation"
+          id="newPassword"
+          type="password"
+          name="newPassword"
+          placeholder="New password"
+          value={passwordUpdate.values.newPassword}
+          onChange={passwordUpdate.handleChange}
+          onBlur={passwordUpdate.handleBlur}
+        />
+        {passwordUpdate.touched.newPassword &&
+          passwordUpdate.errors.newPassword && (
+            <ErrorMessage message={passwordUpdate.errors.newPassword} />
+          )}
+      </div>
+      <div>
+        <div className="mb-2 block">
+          <Label htmlFor="confirmPassword" value="Confirm your new password" />
+        </div>
+        <TextInput
+          id="confirmPassword"
           type="password"
           name="confirmPassword"
-          placeholder="password confirmation"
+          placeholder="Confirm new password"
           value={passwordUpdate.values.confirmPassword}
           onChange={passwordUpdate.handleChange}
           onBlur={passwordUpdate.handleBlur}
         />
-         {passwordUpdate.touched.confirmPassword &&
-            passwordUpdate.errors.confirmPassword && (
-              <ErrorMessage message={passwordUpdate.errors.confirmPassword} />
-            )}
+        {passwordUpdate.touched.confirmPassword &&
+          passwordUpdate.errors.confirmPassword && (
+            <ErrorMessage message={passwordUpdate.errors.confirmPassword} />
+          )}
       </div>
 
-      <Button type="submit">Submit</Button>
+      <div className="flex justify-center">
+        <Button type="submit" className="bg-black">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };
