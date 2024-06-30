@@ -7,7 +7,7 @@ from book.models import Book
 from book.serializers import BookSerializer 
 from .models import book_borrow
 from .serializers import BorrowSerializer , BorrowDetailSerializer
-from custom_user.permissions import IsStudent, IsLibrarian, IsAdmin
+from custom_user.permissions import IsStudent, IsLibrarian, IsAdmin , IsLibrarianOrIsStudent
 from custom_user.models import User
 from book.models import Book
 from book.serializers import BookSerializer
@@ -242,16 +242,14 @@ class BorrowsStatus(APIView):
     
 # - most borrowed books by genre
 class MostBorrowedBooksByGenre(APIView):
-    permission_classes=[IsAuthenticated,IsLibrarian,IsStudent]
+    # changed this line by adding new custom permissions if user is librarian or student in permissions files cus this line doesnt work
+    # permission_classes=[IsAuthenticated,IsLibrarian,IsStudent]
+    permission_classes=[IsAuthenticated,IsLibrarianOrIsStudent]
     def get(self, request):
         genre_list = []
-        # get count of books by genre
-        books = Book.objects.all()
-        for book in books:
-            count = book_borrow.objects.filter(book=book, status="confirmed",genre=book.genre).count()
-            if count > 0 and book.gender not in genre_list:
-                genre_list.append([book.genre, count])
-        return Response(genre_list, status=200)
+        
+        
+        
     
 #  number of non returned borrows for authenticated student
 class NonReturnedBorrows(APIView):
