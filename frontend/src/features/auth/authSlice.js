@@ -1,36 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from "../../services/api";
+import { createSlice } from "@reduxjs/toolkit";
+import { authenticate, logout, updatePassword } from "./authThunks";
+
 const initialState = {
   // later we will add the user objectt using decrpyt jwt token
   user: {},
   isAuthenticated: localStorage.getItem("access") ? true : false,
   role: localStorage.getItem("role") || "",
+
+  // update password
+  updatePwd: {},
 };
-
-export const authenticate = createAsyncThunk("auth/login", async (data) => {
-  const response = await api.post("login/", data);
-  if (response.status == 200) {
-    return response.data;
-  }
-  return response.status;
-});
-// logout thunk
-export const logout = createAsyncThunk("auth/logout", async () => {
-  const response = await api.post(
-    "logout-user/",
-    {
-      // later well add the token in backend httponly cookie
-      refresh: localStorage.getItem("refresh"),
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
-    }
-  );
-
-  return response.status;
-});
 
 const authSlice = createSlice({
   name: "auth",
@@ -62,10 +41,14 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
       state.role = "";
-      // localStorage.removeItem("access");
-      // localStorage.removeItem("refresh");
-      // localStorage.removeItem("role");
-      localStorage.clear()
+      localStorage.clear();
+    });
+
+    builder.addCase(updatePassword.fulfilled, (state, action) => {
+      state.updatePwd = action.payload;
+    });
+    builder.addCase(updatePassword.rejected, (state, action) => {
+      state.updatePwd = action.payload;
     });
   },
 });

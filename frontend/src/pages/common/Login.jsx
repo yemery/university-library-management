@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import ErrorMessage from "../../components/atoms/ErrorMessage";
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { authenticate } from '../../features/auth/authSlice';
+import { authenticate } from "../../features/auth/authThunks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 

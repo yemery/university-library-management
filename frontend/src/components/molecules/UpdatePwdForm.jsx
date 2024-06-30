@@ -3,27 +3,29 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
+import { useDispatch } from "react-redux";
+import { updatePassword } from "../../features/auth/authThunks";
 
 const UpdatePwdForm = () => {
+  const dispatch = useDispatch();
+
   const passwordUpdate = useFormik({
     initialValues: {
-      currentPassword: "",
-      newPassword: "", // Added new field for newPassword
-      confirmPassword: "",
+      old_password: "",
+      new_password: "",
+      confirm_password: "",
     },
     validationSchema: Yup.object({
-      currentPassword: Yup.string()
-        .required("Required")
-        .min(8, "Min 8 characters"),
-      newPassword: Yup.string() // Validation for newPassword
-        .required("Required")
-        .min(8, "Min 8 characters"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("newPassword"), null], "Passwords does not match")
+      old_password: Yup.string().required("Required"),
+      // .min(8, "Min 8 characters"), commented just for testing
+      new_password: Yup.string().required("Required"),
+      // .min(8, "Min 8 characters"), commented just for testing
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("new_password"), null], "Passwords does not match")
         .required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(updatePassword(values));
     },
   });
 
@@ -35,56 +37,56 @@ const UpdatePwdForm = () => {
       <h2 className="text-center text-2xl font-bold mb-4">Update Password</h2>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="currentPassword" value="Your current password" />
+          <Label htmlFor="old_password" value="Your current password" />
         </div>
         <TextInput
-          id="currentPassword"
+          id="old_password"
           type="password"
-          name="currentPassword"
+          name="old_password"
           placeholder="Current password"
-          value={passwordUpdate.values.currentPassword}
+          value={passwordUpdate.values.old_password}
           onChange={passwordUpdate.handleChange}
           onBlur={passwordUpdate.handleBlur}
         />
-        {passwordUpdate.touched.currentPassword &&
-          passwordUpdate.errors.currentPassword && (
-            <ErrorMessage message={passwordUpdate.errors.currentPassword} />
+        {passwordUpdate.touched.old_password &&
+          passwordUpdate.errors.old_password && (
+            <ErrorMessage message={passwordUpdate.errors.old_password} />
           )}
       </div>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="newPassword" value="Your new password" />
+          <Label htmlFor="new_password" value="Your new password" />
         </div>
         <TextInput
-          id="newPassword"
+          id="new_password"
           type="password"
-          name="newPassword"
+          name="new_password"
           placeholder="New password"
-          value={passwordUpdate.values.newPassword}
+          value={passwordUpdate.values.new_password}
           onChange={passwordUpdate.handleChange}
           onBlur={passwordUpdate.handleBlur}
         />
-        {passwordUpdate.touched.newPassword &&
-          passwordUpdate.errors.newPassword && (
-            <ErrorMessage message={passwordUpdate.errors.newPassword} />
+        {passwordUpdate.touched.new_password &&
+          passwordUpdate.errors.new_password && (
+            <ErrorMessage message={passwordUpdate.errors.new_password} />
           )}
       </div>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="confirmPassword" value="Confirm your new password" />
+          <Label htmlFor="confirm_password" value="Confirm your new password" />
         </div>
         <TextInput
-          id="confirmPassword"
+          id="confirm_password"
           type="password"
-          name="confirmPassword"
+          name="confirm_password"
           placeholder="Confirm new password"
-          value={passwordUpdate.values.confirmPassword}
+          value={passwordUpdate.values.confirm_password}
           onChange={passwordUpdate.handleChange}
           onBlur={passwordUpdate.handleBlur}
         />
-        {passwordUpdate.touched.confirmPassword &&
-          passwordUpdate.errors.confirmPassword && (
-            <ErrorMessage message={passwordUpdate.errors.confirmPassword} />
+        {passwordUpdate.touched.confirm_password &&
+          passwordUpdate.errors.confirm_password && (
+            <ErrorMessage message={passwordUpdate.errors.confirm_password} />
           )}
       </div>
 
