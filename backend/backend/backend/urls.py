@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('custom_user.urls')),
     path('api/', include('book.urls')),
-    path('api/', include('borrow.urls'))
+    path('api/', include('borrow.urls')),
+    path('api/', include('waitinglist.urls')),
 ]

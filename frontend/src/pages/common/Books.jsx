@@ -10,6 +10,7 @@ import EditBookForm from "../../components/molecules/EditBookForm";
 import BorrowBook from "../../components/molecules/BorrowBook";
 import BooksSearchFilter from "../../components/molecules/BooksSearchFilter";
 import { Pagination } from "flowbite-react";
+import WaitlistBook from "../../components/molecules/WaitlistBook";
 
 function Books() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function Books() {
     editBook: <EditBookForm />,
     deleteBook: <DeleteBook />,
     borrowBook: <BorrowBook />,
-    waitlistBook: <h1>Waitlist Book</h1>,
+    waitlistBook: <WaitlistBook/>,
   };
 
   return (

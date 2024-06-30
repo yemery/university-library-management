@@ -42,19 +42,6 @@ const borrowABook = createAsyncThunk("/borrows/borrow", async (id) => {
   return response.data;
 });
 
-
-
-// const waitlistABook = createAsyncThunk("/borrows/waitlist", async (id) => {
-//   const response = await api.post(`waitlist/`, {
-//     book: id,
-//   }, {
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("access")}`,
-//     },
-//   });
-//   return response.data;
-// });
-
 const studentBorrows = createAsyncThunk("/borrows/user/", async (params) => {
   const response = await api.get(`borrows/user/`, {
     headers: {
@@ -65,10 +52,23 @@ const studentBorrows = createAsyncThunk("/borrows/user/", async (params) => {
   return response.data;
 });
 
+const waitingListBook = createAsyncThunk("waiting-list/", async (id) => {
+  const response = await api.post(
+    "waiting-list/",
+    { book: id },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    }
+  );
+});
+
 export {
   borrowsList,
   confirmBorrow,
   cancelBorrow,
   borrowABook,
   studentBorrows,
+  waitingListBook,
 };

@@ -4,6 +4,7 @@ import {
   confirmBorrow,
   cancelBorrow,
   studentBorrows,
+  waitingListBook
 } from "./borrowThunks";
 
 const initialState = {
@@ -63,6 +64,10 @@ const borrowSlice = createSlice({
     builder.addCase(studentBorrows.rejected, (action) => {
       console.log("rejected", action);
     });
+    builder.addCase(waitingListBook.fulfilled, (state, action) => {
+      
+    });
+    
     
   },
 });

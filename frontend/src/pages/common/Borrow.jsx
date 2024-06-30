@@ -48,14 +48,7 @@ function Borrow() {
   return (
     <div>
       <div className="flex flex-col gap-8">
-        <Button
-          className="w-80 bg-black  hover:opacity-75 text-white"
-          onClick={() => {
-            navigate("waiting-list");
-          }}
-        >
-          waiting list
-        </Button>
+       
 
         <BorrowsSearchFilter />
       </div>
