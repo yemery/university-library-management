@@ -180,7 +180,7 @@ class CancelBorrow(APIView):
             return Response(
                 {"error": "Borrow not found"}, status=status.HTTP_404_NOT_FOUND
             )
-# get most borrowed books for chart visualization
+
 class MostBorrowedBooks(APIView):
     permission_classes = [IsAuthenticated, IsLibrarian] # IsAdmin not working
 
@@ -198,3 +198,34 @@ class MostBorrowedBooks(APIView):
                 book_list.append([book.title, count])
         # book_list.sort(key=lambda x: x[1], reverse=True)
         return Response(book_list, status=status.HTTP_200_OK)
+
+class MostBorrowingStudents(APIView):
+    permission_classes = [IsAuthenticated, IsLibrarian]
+
+    def get(self, request):
+        borrows = book_borrow.objects.all()
+        users = User.objects.filter(role="student")
+        user_list = []
+        user_list.append(["Student Name", "Borrow Count"])
+        for user in users:
+            count = borrows.filter(user=user, status="confirmed").count()
+            if count > 0 and len(user_list) < 6:
+                user_list.append([user.first_name + " " + user.last_name, count])
+        return Response(user_list, status=status.HTTP_200_OK)
+
+class BorrowsStatus(APIView):
+    permission_classes = [IsAuthenticated, IsLibrarian]
+
+    def get(self, request):
+        status_list = []
+        status_list.append(["Status", "Count"])
+
+        count_pending = book_borrow.objects.filter(status="pending").count()
+        count_confirmed = book_borrow.objects.filter(status="confirmed").count()
+        count_cancelled = book_borrow.objects.filter(status="cancelled").count()
+
+        status_list.append(["Pending", count_pending])
+        status_list.append(["Confirmed", count_confirmed])
+        status_list.append(["Cancelled", count_cancelled])
+
+        return Response(status_list, status=status.HTTP_200_OK)

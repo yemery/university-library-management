@@ -13,4 +13,34 @@ const mostBorrowedBooks = createAsyncThunk(
   }
 );
 
-export { mostBorrowedBooks };
+const mostBorrowingStudents = createAsyncThunk(
+  "borrows/most-students/",
+  async () => {
+    const response = await api.get("borrows/most-students/", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    });
+    return response.data;
+  }
+);
+
+const booksAvailability = createAsyncThunk("books/availability/", async () => {
+  const response = await api.get("books/availability/", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+});
+
+const borrowsStatus = createAsyncThunk("borrows/status/", async () => {
+  const response = await api.get("borrows/status/", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+});
+
+export { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus };

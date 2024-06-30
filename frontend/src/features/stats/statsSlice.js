@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mostBorrowedBooks } from "./statsThunks";
+import { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus } from "./statsThunks";
 
 const initialState = {
   mostBorrowedBooks: {
@@ -29,6 +29,30 @@ const statsSlice = createSlice({
       state.mostBorrowedBooks.data = action.payload;
     });
     builder.addCase(mostBorrowedBooks.rejected, (action) => {
+      console.log("rejected", action);
+    });
+
+    // Get most borrowing students
+    builder.addCase(mostBorrowingStudents.fulfilled, (state, action) => {
+      state.mostBorrowingStudents.data = action.payload;
+    });
+    builder.addCase(mostBorrowingStudents.rejected, (action) => {
+      console.log("rejected", action);
+    });
+
+    // Get books availability
+    builder.addCase(booksAvailability.fulfilled, (state, action) => {
+      state.booksAvailability.data = action.payload;
+    });
+    builder.addCase(booksAvailability.rejected, (action) => {
+      console.log("rejected", action);
+    });
+
+    // Get borrows status
+    builder.addCase(borrowsStatus.fulfilled, (state, action) => {
+      state.borrowsStatus.data = action.payload;
+    });
+    builder.addCase(borrowsStatus.rejected, (action) => {
       console.log("rejected", action);
     });
   },

@@ -38,7 +38,7 @@ function Borrow() {
     showBorrow: <ShowBorrow role={role} />,
     editBorrow: <EditBorrow />,
     editBorrowDates: <EditBorrowDates />,
-  };J
+  };
   const totalPages = useSelector((state) => state.borrows.totalPages);
 
   const onPageChange = (page) => {

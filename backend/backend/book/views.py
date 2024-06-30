@@ -107,3 +107,19 @@ class DeleteBook(APIView):
             return Response({
                 'error': 'Book does not exist'
             }, status=404)
+
+@permission_classes([IsLibrarian])
+class BookAvailabilityStat(APIView):
+    def get(self, request):
+        availability_list = []
+        availability_list.append(["Availability", "Count"])
+
+        count_available = Book.objects.filter(is_available=True).count()
+        count_borrowed = Book.objects.filter(is_available=False).count()
+
+        availability_list.append(["Available", count_available])
+        availability_list.append(["Borrowed", count_borrowed])
+
+        return Response(availability_list, status=200)
+
+        

@@ -11,4 +11,6 @@ urlpatterns = [
     path('borrows/confirm/<int:pk>/', ConfirmBorrow.as_view(), name='confirm_borrow'),
     path('borrows/cancel/<int:pk>/', CancelBorrow.as_view(), name='cancel_borrow'),
     path('borrows/most-borrowed/', MostBorrowedBooks.as_view(), name='most_borrowed_books'),
+    path('borrows/most-students/', MostBorrowingStudents.as_view(), name='most_borrowed_students'),
+    path('borrows/status/', BorrowsStatus.as_view(), name='most_borrowed_books'),
 ]
