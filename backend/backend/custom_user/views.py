@@ -113,11 +113,11 @@ class UpdatePassword(APIView):
         user = request.user
         old_password = request.data['old_password']
         new_password = request.data['new_password']
-        confirm_password = request.data['confirm_password']
+        # confirm_password = request.data['confirm_password']
         if not user.check_password(old_password):
-            return Response({'error': 'Incorrect password'}, status=400)
-        if new_password != confirm_password:
-            return Response({'error': 'Passwords do not match'}, status=400)
+            return Response({'message': 'Incorrect password'}, status=400)
+        # if new_password != confirm_password:
+            # return Response({'error': 'Passwords do not match'}, status=400)
         user.set_password(new_password)
         user.save()
         return Response({'message': 'Password updated successfully'}, status=200)

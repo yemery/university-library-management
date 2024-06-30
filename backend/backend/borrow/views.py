@@ -239,3 +239,26 @@ class BorrowsStatus(APIView):
         status_list.append(["Cancelled", count_cancelled])
 
         return Response(status_list, status=status.HTTP_200_OK)
+    
+# - most borrowed books by genre
+class MostBorrowedBooksByGenre(APIView):
+    permission_classes=[IsAuthenticated,IsLibrarian,IsStudent]
+    def get(self, request):
+        genre_list = []
+        # get count of books by genre
+        books = Book.objects.all()
+        for book in books:
+            count = book_borrow.objects.filter(book=book, status="confirmed",genre=book.genre).count()
+            if count > 0 and book.gender not in genre_list:
+                genre_list.append([book.genre, count])
+        return Response(genre_list, status=200)
+    
+#  number of non returned borrows for authenticated student
+class NonReturnedBorrows(APIView):
+    permission_classes=[IsAuthenticated,IsStudent]
+    def get(self, request):
+        borrows = book_borrow.objects.filter(user=request.user,status='confirmed',return_date__isnull=True)
+        count=borrows.count()
+        return Response({
+            'count':count
+        },status=200)

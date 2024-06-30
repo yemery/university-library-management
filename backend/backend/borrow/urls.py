@@ -13,4 +13,7 @@ urlpatterns = [
     path('borrows/most-borrowed/', MostBorrowedBooks.as_view(), name='most_borrowed_books'),
     path('borrows/most-students/', MostBorrowingStudents.as_view(), name='most_borrowed_students'),
     path('borrows/status/', BorrowsStatus.as_view(), name='most_borrowed_books'),
+    path('borrows/most-borrowed-by-genre/', MostBorrowedBooksByGenre.as_view(), name='most_borrowed_books_by_genre'),
+    path('borrows/non-returned/', NonReturnedBorrows.as_view(), name='non_returned_books'),
+
 ]

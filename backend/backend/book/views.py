@@ -8,6 +8,7 @@ from .models import Book
 from .serializers import BookSerializer
 import math
 from django.core.paginator import Paginator,EmptyPage
+from borrow.models import book_borrow
 @permission_classes([IsAuthenticated])
 class BooksList(APIView):
     def get(self, request):
@@ -122,4 +123,8 @@ class BookAvailabilityStat(APIView):
 
         return Response(availability_list, status=200)
 
+
         
+
+
+
