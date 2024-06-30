@@ -65,7 +65,7 @@ class BorrowList(APIView):
         total_pages= borrows.count()
             # if number is float we need to ceil it to the next number
         total_pages=math.ceil(total_pages/10) 
-        print(total_pages)
+        
         title = request.query_params.get('title', None)
         if title:
             title = title.strip()
@@ -116,15 +116,25 @@ class OwnBorrowList(APIView):
     def get(self, request):
         try:
             borrows = book_borrow.objects.filter(user=request.user.id)
-            # print(borrows[0].book.title)
-            serializer = BorrowDetailSerializer(borrows, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            total_pages= borrows.count()
+            total_pages=math.ceil(total_pages/10) 
+            page=request.query_params.get('page',default=1)
+            paginator=Paginator(borrows,per_page=10)
+            try:
+                borrows=paginator.page(number=page)
+            except EmptyPage: 
+                return Response({
+                    'error': 'No borrows found'
+                }, status=404)
+
+            return Response({
+                'borrows': BorrowDetailSerializer(borrows, many=True).data,
+                'total_pages':total_pages
+            }, status=200)
         except book_borrow.DoesNotExist:
-            return Response(
-                {"error": "No borrows found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-
+            return Response({"error": "Borrow not found"}, status=status.HTTP_404_NOT_FOUND)
+            
 class ConfirmBorrow(APIView):
     permission_classes = [IsAuthenticated, IsLibrarian]
 

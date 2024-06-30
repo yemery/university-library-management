@@ -53,11 +53,12 @@ const borrowABook = createAsyncThunk("/borrows/borrow", async (id) => {
 //   return response.data;
 // });
 
-const studentBorrows = createAsyncThunk("/borrows/user/", async () => {
+const studentBorrows = createAsyncThunk("/borrows/user/", async (params) => {
   const response = await api.get(`borrows/user/`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },
+    params: params,
   });
   return response.data;
 });

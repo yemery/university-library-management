@@ -88,6 +88,7 @@ export default function App() {
             },
             { path: "books", element: <Auth component={Books} /> },
             { path: "borrows", element: <Auth component={Borrow} /> },
+            { path: "profile", element: <Auth component={Profile} /> },
           ],
         },
       ],
