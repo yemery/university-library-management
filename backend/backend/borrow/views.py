@@ -242,7 +242,7 @@ class BorrowsStatus(APIView):
     
 # - most borrowed books by genre
 class MostBorrowedBooksByGenre(APIView):
-    # changed this line by adding new custom permissions if user is librarian or student in permissions files cus this line doesnt work
+    # changed this line by adding new custom permissions if user is librarian or student in permissions files cus this line doesnt work because there a false return for the first role perm
     # permission_classes=[IsAuthenticated,IsLibrarian,IsStudent]
     permission_classes=[IsAuthenticated,IsLibrarianOrIsStudent]
     def get(self, request):

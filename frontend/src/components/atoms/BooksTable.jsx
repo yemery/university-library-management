@@ -47,7 +47,6 @@ function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
     dispatch(targetBookID(id));
     waitlistModal();
   };
-  
 
   return (
     <div className="mt-10">
@@ -75,7 +74,15 @@ function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
               <TableCell>{book.description}</TableCell>
               <TableCell>{book.gender}</TableCell>
               <TableCell>
-                {book.is_available ? <Badge color="info">Available</Badge> : <Badge color="failure">Borrowed</Badge>}
+                {book.is_available ? (
+                  <Badge color="info" className="w-fit">
+                    Available
+                  </Badge>
+                ) : (
+                  <Badge color="failure" className="w-fit">
+                    Borrowed
+                  </Badge>
+                )}
               </TableCell>
               <TableCell>
                 {checkRole() ? (
@@ -90,19 +97,25 @@ function BooksTable({ editModal, deleteModal, borrowModal, waitlistModal }) {
                     />
                   </div>
                 ) : book.is_available ? (
-                  <Button
-                    className="bg-black text-white"
-                    onClick={() => handleBorrow(book.id)}
-                  >
+                  // <Button
+                  //   className="bg-black text-white"
+                  //   onClick={() => handleBorrow(book.id)}
+                  // >
+                  //   Borrow
+                  // </Button>
+                  <Badge color="purple" size="sm" className="w-fit cursor-pointer" onClick={() => handleBorrow(book.id)}>
                     Borrow
-                  </Button>
+                  </Badge>
                 ) : (
-                  <Button
-                    className="bg-black text-white"
-                    onClick={() => handleWaitlist(book.id)}
-                  >
-                    Waitlist
-                  </Button>
+                  // <Button
+                  //   className="bg-black text-white"
+                  //   onClick={() => handleWaitlist(book.id)}
+                  // >
+                  //   Waitlist
+                  // </Button>
+                  <Badge color="gray" size="sm" className="w-fit cursor-pointer" onClick={() => handleWaitlist(book.id)}>
+                    Reserve
+                  </Badge>
                 )}
               </TableCell>
             </TableRow>

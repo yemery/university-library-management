@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { updatePassword } from "../../features/auth/authThunks";
+import H5 from "../atoms/H5";
 
 const UpdatePwdForm = () => {
   const dispatch = useDispatch();
@@ -31,10 +32,10 @@ const UpdatePwdForm = () => {
 
   return (
     <form
-      className="flex max-w-md flex-col gap-4 mx-auto"
+      className="flex  flex-col gap-4"
       onSubmit={passwordUpdate.handleSubmit}
     >
-      <h2 className="text-center text-2xl font-bold mb-4">Update Password</h2>
+      <H5 label={"Update Password"} />
       <div>
         <div className="mb-2 block">
           <Label htmlFor="old_password" value="Your current password" />
@@ -90,11 +91,11 @@ const UpdatePwdForm = () => {
           )}
       </div>
 
-      <div className="flex justify-center">
+      
         <Button type="submit" className="bg-black">
           Submit
         </Button>
-      </div>
+      
     </form>
   );
 };

@@ -28,9 +28,9 @@ const EditBorrowDates = () => {
   });
 
   return (
-    <form className="space-y-7" onSubmit={datesForm.handleSubmit}>
+    <form className="flex  flex-col gap-4" onSubmit={datesForm.handleSubmit}>
       <H5 label="Edit Borrow Dates" />
-      <div className="space-y-3 ">
+      <div className="mb-2 block ">
         <H5 label="Edit Borrow Date" />
 
         {/* <DatePicker selected={borrowDate} onSelect={(date) => setDates({ ...dates, borrowDate: date })  } /> */}
@@ -41,11 +41,13 @@ const EditBorrowDates = () => {
         />
         
       </div>
-      <div className="space-y-3">
+      <div className="mb-2 block">
         <H5 label="Edit Return Date" />
 
         {/* <DatePicker selected={returnDate} onSelect={(date) => setDates({ ...dates, returnDate: date })  } /> */}
         <DatePicker
+        // wrapperClassName='date_picker full-width'
+        style={{ width: '100%' }}
           name="returnDate"
           selected={datesForm.values.returnDate ? new Date(datesForm.values.returnDate) : null}
           onChange={date => datesForm.setFieldValue('returnDate', date)}
