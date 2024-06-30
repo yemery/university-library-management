@@ -105,3 +105,19 @@ class ExportUsers(APIView):
         response['Content-Disposition'] = 'attachment; filename=users.csv'
 
         return response
+    
+class UpdatePassword(APIView):
+    permission_classes = [IsAuthenticated]
+    # old password, new password, confirm password
+    def post(self, request):
+        user = request.user
+        old_password = request.data['old_password']
+        new_password = request.data['new_password']
+        confirm_password = request.data['confirm_password']
+        if not user.check_password(old_password):
+            return Response({'error': 'Incorrect password'}, status=400)
+        if new_password != confirm_password:
+            return Response({'error': 'Passwords do not match'}, status=400)
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password updated successfully'}, status=200)

@@ -12,5 +12,6 @@ urlpatterns=[
     path('logout-user/', logout.as_view()),
     path('import-users/', ImportUsers.as_view()),
     path('export-users/', ExportUsers.as_view()),
+    path('update-pwd/', UpdatePassword.as_view()),
     
 ]
