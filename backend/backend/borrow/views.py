@@ -120,6 +120,17 @@ class OwnBorrowList(APIView):
             total_pages= borrows.count()
             total_pages=math.ceil(total_pages/10) 
             page=request.query_params.get('page',default=1)
+            title = request.query_params.get('title', None)
+            if title:
+                title = title.strip()
+            
+            
+            status = request.query_params.get('status', None)
+            if status is not None:
+                borrows = borrows.filter(status=status)
+            
+            if title is not None:
+                borrows = borrows.filter(book__title__icontains=title)
             paginator=Paginator(borrows,per_page=10)
             try:
                 borrows=paginator.page(number=page)

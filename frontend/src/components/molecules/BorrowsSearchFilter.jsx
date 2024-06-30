@@ -5,10 +5,11 @@ import SearchFilter from "../atoms/SearchFilter";
 import SelectFilter from "../atoms/SelectFilter";
 import { borrowSelectOptions } from "../../assets/filteringOptions";
 import { Button } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { useDispatch ,useSelector} from "react-redux";
 import { borrowsList } from "../../features/borrow/borrowThunks";
-
+import { studentBorrows } from "../../features/borrow/borrowThunks";
 function BorrowsSearchFilter() {
+  const role = useSelector(state => state.auth.role)
   const dispatch = useDispatch();
   const searchFilter = useFormik({
     initialValues: {
@@ -32,7 +33,9 @@ function BorrowsSearchFilter() {
       if (values.status != "") {
         filters.status = values.status
       }
-      dispatch(borrowsList(filters));
+
+      role == "librarian" && dispatch(borrowsList(filters));
+      role == "student" && dispatch(studentBorrows(filters));
     },
   });
   
@@ -48,12 +51,14 @@ function BorrowsSearchFilter() {
         value={searchFilter.values.title}
         change={searchFilter.handleChange}
       />
-      <SearchFilter
-        search="user"
-        name="user"
-        value={searchFilter.values.user}
-        change={searchFilter.handleChange}
-      />
+      {role == "librarian" && (
+          <SearchFilter
+          search="user"
+          name="user"
+          value={searchFilter.values.user}
+          change={searchFilter.handleChange}
+        />
+      )}
       <SelectFilter
         name="status"
         value={searchFilter.values.status}

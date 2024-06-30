@@ -9,7 +9,8 @@ from .serializers import BookSerializer
 import math
 from django.core.paginator import Paginator,EmptyPage
 from borrow.models import book_borrow
-@permission_classes([IsAuthenticated])
+from custom_user.permissions import IsLibrarianOrIsStudent
+@permission_classes([IsAuthenticated,IsLibrarianOrIsStudent])
 class BooksList(APIView):
     def get(self, request):
         try:
