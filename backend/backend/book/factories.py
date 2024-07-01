@@ -12,6 +12,8 @@ class BookFactory(factory.django.DjangoModelFactory):
     author = factory.Faker('name')
     description = factory.Faker('text')
     is_available = True
+    
+    gender = factory.Faker('sentence', nb_words=1)
     created_at = factory.Faker('date_time_this_year')
     updated_at = factory.Faker('date_time_this_year')
     

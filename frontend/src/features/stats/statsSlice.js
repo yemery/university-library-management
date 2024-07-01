@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus } from "./statsThunks";
+import { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus,nonReturnedBorrows } from "./statsThunks";
 
 const initialState = {
   mostBorrowedBooks: {
@@ -18,6 +18,10 @@ const initialState = {
     title: "borrows status",
     data: [],
   },
+  nonReturnedBooksStats : {
+    title: "Number of non returned books",
+    data: [],
+  }
 };
 
 const statsSlice = createSlice({
@@ -54,6 +58,9 @@ const statsSlice = createSlice({
     });
     builder.addCase(borrowsStatus.rejected, (action) => {
       console.log("rejected", action);
+    });
+    builder.addCase(nonReturnedBorrows.fulfilled, (state, action) => {
+      state.nonReturnedBooksStats.data = action.payload;  
     });
   },
 });

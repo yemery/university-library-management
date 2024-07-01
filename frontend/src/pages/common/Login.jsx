@@ -75,7 +75,7 @@ const Login = () => {
      <div className="flex md:flex-row flex-col w-full h-screen"> 
       <div className="w-full md:bg-black md:h-full flex flex-col justify-between p-3">
         <Logo />
-        <p className="text-white hidden md:block px-10 py-3">Explore the world of Flowbite with our amazing templates.</p>
+        <p className="text-white hidden md:block px-10 py-3">Explore a seamless library experience. </p>
       </div>
       <div className="w-full flex flex-col items-center justify-center my-auto gap-y-3">
         <form className=" w-2/3 px-3 flex flex-col gap-y-5" onSubmit={loginForm.handleSubmit}>

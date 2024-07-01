@@ -52,7 +52,7 @@ function Books() {
 
   return (
     <div>
-      <div className="flex flex-col gap-8">
+      <div className="flex  gap-8">
         {role == "librarian" && (
           <Button
             className="w-80 bg-black  hover:opacity-75 text-white"

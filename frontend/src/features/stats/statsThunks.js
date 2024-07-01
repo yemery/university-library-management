@@ -42,5 +42,13 @@ const borrowsStatus = createAsyncThunk("borrows/status/", async () => {
   });
   return response.data;
 });
+const nonReturnedBorrows = createAsyncThunk("/borrows/non-returned/", async () => {
+  const response = await api.get("borrows/non-returned/", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },}
+  );
+  return response.data;
+});
 
-export { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus };
+export { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus , nonReturnedBorrows};

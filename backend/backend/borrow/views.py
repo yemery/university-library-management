@@ -17,7 +17,6 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator,EmptyPage
 
 # Create your views here.
-
 import math
 # add borrow book
 class BorrowBook(APIView):
@@ -47,7 +46,8 @@ class BorrowBook(APIView):
                         [request.user.email],
                         fail_silently=False,
                     )
-                    
+                   
+                
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -264,13 +264,11 @@ class MostBorrowedBooksByGenre(APIView):
     
 #  number of non returned borrows for authenticated student
 class NonReturnedBorrows(APIView):
-    permission_classes=[IsAuthenticated,IsStudent]
+    permission_classes=[IsAuthenticated,IsLibrarian]
     def get(self, request):
-        borrows = book_borrow.objects.filter(user=request.user,status='confirmed',return_date__isnull=True)
+        borrows = book_borrow.objects.filter(status='confirmed',return_date__isnull=True)
         count=borrows.count()
-        return Response({
-            'count':count
-        },status=200)
+        return Response(count,status=200)
 
 # - number of my borrows (number w sf)
 class MyBorrows(APIView):
