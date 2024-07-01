@@ -203,7 +203,7 @@ class CancelBorrow(APIView):
             )
 
 class MostBorrowedBooks(APIView):
-    permission_classes = [IsAuthenticated, IsLibrarian] # IsAdmin not working
+    permission_classes = [IsAuthenticated, IsLibrarianOrIsStudent] # IsAdmin not working
 
     def get(self, request):
         borrows = book_borrow.objects.all()
@@ -251,13 +251,7 @@ class BorrowsStatus(APIView):
 
         return Response(status_list, status=status.HTTP_200_OK)
     
-# - most borrowed books by genre
-class MostBorrowedBooksByGenre(APIView):
-    # changed this line by adding new custom permissions if user is librarian or student in permissions files cus this line doesnt work because there a false return for the first role perm
-    # permission_classes=[IsAuthenticated,IsLibrarian,IsStudent]
-    permission_classes=[IsAuthenticated,IsLibrarianOrIsStudent]
-    def get(self, request):
-        genre_list = []
+
         
         
         
@@ -276,9 +270,7 @@ class MyBorrows(APIView):
     def get(self, request):
         borrows = book_borrow.objects.filter(user=request.user)
         count=borrows.count()
-        return Response({
-            count
-        },status=200)
+        return Response(count,status=200)
         
     
 # - my borrows status by status by authenticated student
@@ -298,3 +290,12 @@ class MyBorrowsStatus(APIView):
         status_list.append(["Cancelled", count_cancelled])
 
         return Response(status_list, status=status.HTTP_200_OK)
+    
+    
+    
+class OwnNonRetrunedBorrows(APIView):
+    permission_classes=[IsAuthenticated,IsStudent]
+    def get(self, request):
+        borrows = book_borrow.objects.filter(status='confirmed',return_date__isnull=True,user=request.user)
+        count=borrows.count()
+        return Response(count,status=200)

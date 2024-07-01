@@ -58,10 +58,10 @@ function BorrowsTable({ role, showModal, editModal,editModalDates }) {
                 
               </TableCell>
               <TableCell>
-                {borrow.borrow_date ? `${new Date(borrow.borrow_date).toLocaleDateString('en-GB')}` : "null"}
+                {borrow.borrow_date ? `${new Date(borrow.borrow_date).toLocaleDateString('en-GB')}` : "not delivered yet"}
               </TableCell>
               <TableCell>
-                {borrow.return_date ? `${new Date(borrow.return_date).toLocaleDateString('en-GB')}` : "null"}
+                {borrow.return_date ? `${new Date(borrow.return_date).toLocaleDateString('en-GB')}` : "not returned yet"}
               </TableCell>
               <TableCell>
                 <div className="flex gap-4">

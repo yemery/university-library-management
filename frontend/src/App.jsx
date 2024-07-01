@@ -12,8 +12,9 @@ import Unauthorized from "./pages/common/Unauthorized";
 
 // ___
 // import {Dashboard as StudentDashboard} from "./pages/student/Dashboard";
-import Dashboard from "./pages/librarian/Dashboard";
+import LibrarianDashboard from "./pages/librarian/Dashboard";
 import ErrorPage from "./pages/common/ErrorPage";
+import StudentDashboard from "./pages/student/Dashboard";
 // import {Dashboard as AdminDashboard} from "./pages/admin/Dashboard";
 
 export default function App() {
@@ -42,7 +43,7 @@ export default function App() {
           children: [
             {
               path: "dashboard",
-              element: <Auth component={Dashboard} />,
+              element: <Auth component={LibrarianDashboard} />,
               // element: <Dashboard />,
               // element: <authMiddleware component={LibrarianDashboard} />,
             },
@@ -84,7 +85,7 @@ export default function App() {
           children: [
             {
               path: "dashboard",
-              // element: <Auth component={StudentDashboard}/>
+              element: <Auth component={StudentDashboard}/>
             },
             { path: "books", element: <Auth component={Books} /> },
             { path: "borrows", element: <Auth component={Borrow} /> },

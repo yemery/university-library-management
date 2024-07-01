@@ -42,13 +42,52 @@ const borrowsStatus = createAsyncThunk("borrows/status/", async () => {
   });
   return response.data;
 });
-const nonReturnedBorrows = createAsyncThunk("/borrows/non-returned/", async () => {
-  const response = await api.get("borrows/non-returned/", {
+const nonReturnedBorrows = createAsyncThunk(
+  "/borrows/non-returned/",
+  async () => {
+    const response = await api.get("borrows/non-returned/", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    });
+    return response.data;
+  }
+);
+
+const ownBorrowsStats = createAsyncThunk("borrows/my-borrows", async () => {
+  const response = await api.get("borrows/borrowed-books/", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
-    },}
-  );
+    },
+  });
+  return response.data;
+});
+const ownBorrowedStatus = createAsyncThunk("borrows/my-borrows-status", async () => {
+  const response = await api.get("borrows/by-status/", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
   return response.data;
 });
 
-export { mostBorrowedBooks, mostBorrowingStudents, booksAvailability, borrowsStatus , nonReturnedBorrows};
+const onwNonReturnedBorrows=createAsyncThunk("borrows/my-non-returned",async()=>{
+  const response = await api.get("borrows/own-non-returned/", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+})
+
+
+export {
+  mostBorrowedBooks,
+  mostBorrowingStudents,
+  booksAvailability,
+  borrowsStatus,
+  nonReturnedBorrows,
+  ownBorrowsStats,
+  ownBorrowedStatus,
+  onwNonReturnedBorrows
+};
