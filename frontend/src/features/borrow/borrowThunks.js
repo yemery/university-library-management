@@ -64,6 +64,15 @@ const waitingListBook = createAsyncThunk("waiting-list/", async (id) => {
   );
 });
 
+const updateBorrowRecord=createAsyncThunk("borrows/update",async (data)=>{
+  const response=await api.patch(`borrows/update/${data.id}/`,data,{
+    headers:{
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    }
+  });
+  return response.data;
+});
+
 
 
 export {
@@ -73,4 +82,5 @@ export {
   borrowABook,
   studentBorrows,
   waitingListBook,
+  updateBorrowRecord
 };

@@ -4,7 +4,9 @@ import {
   confirmBorrow,
   cancelBorrow,
   studentBorrows,
-  waitingListBook
+  waitingListBook,
+  updateBorrowRecord,
+
 } from "./borrowThunks";
 
 const initialState = {
@@ -66,6 +68,11 @@ const borrowSlice = createSlice({
     });
     builder.addCase(waitingListBook.fulfilled, (state, action) => {
       
+    });
+    builder.addCase(updateBorrowRecord.fulfilled, (state, action) => {
+      console.log("updateBorrowRecord.fulfilled");
+      // state.borrows = action.payload;
+
     });
     
     

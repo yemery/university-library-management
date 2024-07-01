@@ -96,7 +96,7 @@ class BorrowList(APIView):
                 'borrows': BorrowDetailSerializer(borrows, many=True).data,
                 'total_pages':total_pages
             }, status=200)
-
+# call this endpoint to update the borrow status example : 
     def patch(self, request, pk):
         try:
             borrow = book_borrow.objects.get(id=pk)
@@ -277,7 +277,7 @@ class MyBorrows(APIView):
         borrows = book_borrow.objects.filter(user=request.user)
         count=borrows.count()
         return Response({
-            'count':count
+            count
         },status=200)
         
     

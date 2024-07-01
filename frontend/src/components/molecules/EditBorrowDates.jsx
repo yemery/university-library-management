@@ -4,25 +4,48 @@ import H5 from "../atoms/H5";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "../atoms/Button";
-const EditBorrowDates = () => {
+import { updateBorrowRecord } from "../../features/borrow/borrowThunks";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import ErrorMessage from "../atoms/ErrorMessage";
 
+const Editborrow_dates = () => {
+  const dispatch = useDispatch();
+  const navigator = useNavigate();
+  // const borrow_date = useSelector((state) => state.borrows.borrow.borrow_date);
+  // const return_date = useSelector((state) => state.borrows.borrow.return_date);
 
-  const borrowDate = useSelector((state) => state.borrows.borrow.borrow_date);
-  const returnDate = useSelector((state) => state.borrows.borrow.return_date);
+  const borrow = useSelector((state) => state.borrows.borrow);
 
   const datesForm = useFormik({
     initialValues: {
-      borrowDate: borrowDate == null ? "" : borrowDate,
-      returnDate: returnDate == null ? "" : returnDate,
+      borrow_date: borrow.borrow_date == null ? "" : borrow.borrow_date,
+      return_date: borrow.return_date == null ? "" : borrow.return_date,
     },
+    validationSchema: Yup.object({
+      borrow_date: Yup.date().required("Required"),
+      return_date: Yup.date()
+        .required("Return date is required")
+        .min(
+          Yup.ref("borrow_date"),
+          "Return date must be greater than borrow date"
+        ),
+    }),
     onSubmit: (values) => {
       const submitValues = {
-        borrowDate: values.borrowDate ? new Date(values.borrowDate).toISOString() : null,
-        returnDate: values.returnDate ? new Date(values.returnDate).toISOString() : null,
+        borrow_date: values.borrow_date
+          ? new Date(values.borrow_date).toISOString()
+          : null,
+        return_date: values.return_date
+          ? new Date(values.return_date).toISOString()
+          : null,
       };
-      console.log(submitValues);
+
+      dispatch(updateBorrowRecord({ id: borrow.id, ...submitValues }));
+      navigator(0);
+      // console.log(submitValues);
       // borrowthunk patch call
     },
   });
@@ -33,29 +56,37 @@ const EditBorrowDates = () => {
       <div className="mb-2 block ">
         <H5 label="Edit Borrow Date" />
 
-        {/* <DatePicker selected={borrowDate} onSelect={(date) => setDates({ ...dates, borrowDate: date })  } /> */}
+        {/* <DatePicker selected={borrow_date} onSelect={(date) => setDates({ ...dates, borrow_date: date })  } /> */}
         <DatePicker
-          name="borrowDate"
-          selected={datesForm.values.borrowDate ? new Date(datesForm.values.borrowDate) : null}
-          onChange={date => datesForm.setFieldValue('borrowDate', date)}
+          name="borrow_date"
+          selected={
+            datesForm.values.borrow_date
+              ? new Date(datesForm.values.borrow_date)
+              : null
+          }
+          onChange={(date) => datesForm.setFieldValue("borrow_date", date)}
         />
-        
       </div>
       <div className="mb-2 block">
         <H5 label="Edit Return Date" />
 
-        {/* <DatePicker selected={returnDate} onSelect={(date) => setDates({ ...dates, returnDate: date })  } /> */}
         <DatePicker
-        // wrapperClassName='date_picker full-width'
-        style={{ width: '100%' }}
-          name="returnDate"
-          selected={datesForm.values.returnDate ? new Date(datesForm.values.returnDate) : null}
-          onChange={date => datesForm.setFieldValue('returnDate', date)}
+          style={{ width: "100%" }}
+          name="return_date"
+          selected={
+            datesForm.values.return_date
+              ? new Date(datesForm.values.return_date)
+              : null
+          }
+          onChange={(date) => datesForm.setFieldValue("return_date", date)}
         />
+        {datesForm.errors.return_date && datesForm.touched.return_date && (
+          <ErrorMessage message={datesForm.errors.return_date} />
+        )}
       </div>
-      <Button text="Submit" type="submit" />
+      <Button text="Submit" />
     </form>
   );
 };
 
-export default EditBorrowDates;
+export default Editborrow_dates;
