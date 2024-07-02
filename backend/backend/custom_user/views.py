@@ -47,6 +47,7 @@ class login(APIView):
                     "access": str(access),
                     "refresh": str(refresh),
                     "user": UserSerializer(user).data,
+                    "message": "User logged in successfully",
                 },
                 status=200,
             )

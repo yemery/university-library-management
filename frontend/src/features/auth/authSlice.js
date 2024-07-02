@@ -7,8 +7,10 @@ const initialState = {
   isAuthenticated: localStorage.getItem("access") ? true : false,
   role: localStorage.getItem("role") || "",
 
-  // update password
-  updatePwd: {},
+  response: {
+    type: "",
+    message: "",
+  },
 };
 
 const authSlice = createSlice({
@@ -21,21 +23,27 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(authenticate.fulfilled, (state, action) => {
-      // console.log('entered')
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.role = action.payload.user.role;
       localStorage.setItem("access", action.payload.access);
       localStorage.setItem("refresh", action.payload.refresh);
       localStorage.setItem("role", action.payload.user.role);
+      state.response = {
+        type: "success",
+        message: "Logged in successfully",
+      };
     });
 
     builder.addCase(authenticate.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.user = {};
 
-      console.log("rejected", action);
-      // handling error
+      state.response.type = "error";
+      // if action.error.message contains 401 is unauthorized else it is server error
+      action.error.message.includes("401")
+        ? (state.response.message = "Invalid credentials")
+        : (state.response.message = "Something went wrong");
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isAuthenticated = false;
@@ -45,13 +53,20 @@ const authSlice = createSlice({
     });
 
     builder.addCase(updatePassword.fulfilled, (state, action) => {
-      state.updatePwd = action.payload;
+      state.response = {
+        type: action.payload.status == 200 ? "success" : "error",
+        message: action.payload.message,
+      };
     });
     builder.addCase(updatePassword.rejected, (state, action) => {
-      state.updatePwd = action.payload;
+      state.response = {
+        type: "error",
+        message: action.error.message.includes("400")
+          ? "Credentials provided for update are invalid"
+          : "Something went wrong. Aborting update process",
+      };
     });
   },
 });
 
-// export const { checkLogin } = authSlice.actions;
 export default authSlice.reducer;

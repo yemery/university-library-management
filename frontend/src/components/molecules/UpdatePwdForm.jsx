@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updatePassword } from "../../features/auth/authThunks";
 import H5 from "../atoms/H5";
 
-const UpdatePwdForm = () => {
+const UpdatePwdForm = ({ close }) => {
   const dispatch = useDispatch();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const passwordUpdate = useFormik({
     initialValues: {
@@ -27,8 +28,28 @@ const UpdatePwdForm = () => {
     }),
     onSubmit: (values) => {
       dispatch(updatePassword(values));
+      setFormSubmitted(true);
     },
   });
+
+  const response = useSelector((state) => state.auth.response);
+  // getting response message after performing an endpoint call
+  useEffect(() => {
+    const emptyResponse = Object.values(response).some(value => value !== '');
+  
+    if (formSubmitted && emptyResponse) {
+
+    const intervalId = setInterval(() => {
+      console.log(response);
+      // toastify call here
+      // closing the modal after getting the response message
+      close();
+    }, 500);
+    
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+    }
+  }, [response, formSubmitted]);
 
   return (
     <form
@@ -91,11 +112,9 @@ const UpdatePwdForm = () => {
           )}
       </div>
 
-      
-        <Button type="submit" className="bg-black">
-          Submit
-        </Button>
-      
+      <Button type="submit" className="bg-black">
+        Submit
+      </Button>
     </form>
   );
 };

@@ -55,7 +55,7 @@ const Profile = () => {
         openModal={openModal}
         setOpenModal={() => setOpenModal(false)}
       >
-        <UpdatePwdForm />
+        <UpdatePwdForm close = {()=> setOpenModal(false)} />
       </ModalContainer>
     </div>
   );
