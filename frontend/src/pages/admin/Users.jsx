@@ -9,6 +9,8 @@ import DeleteUser from "../../components/molecules/DeleteUser";
 import UpdateUser from "../../components/molecules/UpdateUser";
 import { Button } from "flowbite-react";
 import AddUser from "../../components/molecules/AddUser";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Users() {
   const dispatch = useDispatch();
@@ -26,10 +28,14 @@ function Users() {
   const [openModal, setOpenModal] = useState(false);
   const [modalForm, setModalForm] = useState(null);
 
+  const close = () => {
+    setOpenModal(false);
+  };
+
   const modals = {
-    updatePwd: <UpdateUser />,
-    deleteUser: <DeleteUser />,
-    addUser: <AddUser />,
+    updatePwd: <UpdateUser close={close} />,
+    deleteUser: <DeleteUser close={close} />,
+    addUser: <AddUser close={close} />,
   };
   const handleModal = (content) => {
     setOpenModal(true);
@@ -81,6 +87,19 @@ function Users() {
       >
         {modals[modalForm]}
       </ModalContainer>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

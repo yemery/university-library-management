@@ -2,16 +2,16 @@ import React from "react";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Input from "../atoms/Input";
 import H5 from "../atoms/H5";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextInput } from "flowbite-react";
-import { updateUserPwd } from "../../features/users/usersThunks";
+import { getUsers, updateUserPwd } from "../../features/users/usersThunks";
+import { toast } from "react-toastify";
 
-const  UpdateUser = () =>{
+const UpdateUser = ({close}) => {
   const dispatch = useDispatch();
-  // prb to from <here to get id of user
-  const userID= useSelector((state) => state.users.userID);
+  
+  const userID = useSelector((state) => state.users.userID);
 
   const passwordForm = useFormik({
     initialValues: {
@@ -25,12 +25,13 @@ const  UpdateUser = () =>{
         .required("Required"),
     }),
     onSubmit: (values) => {
-      // console.log("submitting password form")
-      dispatch(updateUserPwd({id:userID, ...values}));
+      dispatch(updateUserPwd({ id: userID, ...values }));
+      toast.success("Password updated successfully");
+      close();
+      dispatch(getUsers());
       passwordForm.resetForm();
     },
   });
-  
 
   return (
     <form className="flex  flex-col gap-4" onSubmit={passwordForm.handleSubmit}>
@@ -49,9 +50,10 @@ const  UpdateUser = () =>{
           passwordForm.errors.new_password && (
             <ErrorMessage message={passwordForm.errors.new_password} />
           )}
-
       </div>
       <div>
+      <H5 label="Confirm Password" />
+
         <TextInput
           id="confirm_password"
           type="password"
@@ -60,17 +62,18 @@ const  UpdateUser = () =>{
           value={passwordForm.values.confirm_password}
           onChange={passwordForm.handleChange}
           onBlur={passwordForm.handleBlur}
-          />
+        />
 
         {passwordForm.touched.confirm_password &&
           passwordForm.errors.confirm_password && (
             <ErrorMessage message={passwordForm.errors.confirm_password} />
           )}
       </div>
-           <Button type="submit" className="bg-black">Update Password</Button>  
-
+      <Button type="submit" className="bg-black">
+        Update Password
+      </Button>
     </form>
   );
-}
+};
 
 export default UpdateUser;

@@ -1,17 +1,19 @@
 import React from "react";
 import H5 from "../atoms/H5";
 import { useDispatch } from "react-redux";
-import { Button, Select, TextInput } from "flowbite-react";
+import { Button } from "flowbite-react";
 import ErrorMessage from "../atoms/ErrorMessage";
 import Input from "../atoms/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SelectFilter from "../atoms/SelectFilter";
-import { addUser } from "../../features/users/usersThunks";
+import { addUser, getUsers } from "../../features/users/usersThunks";
 import { usersSelectOptions } from "../../assets/filteringOptions";
+import { toast } from "react-toastify";
 
-function AddUser() {
+function AddUser({ close }) {
   const dispatch = useDispatch();
+
   const addUserForm = useFormik({
     initialValues: {
       email: "",
@@ -19,8 +21,9 @@ function AddUser() {
       last_name: "",
       password: "",
       confirm_password: "",
-      role: "", // select input
+      role: "",
     },
+
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
       first_name: Yup.string().required("Required"),
@@ -33,11 +36,16 @@ function AddUser() {
         .required("Required"),
       role: Yup.string().required("Required"),
     }),
+
     onSubmit: (values) => {
       dispatch(addUser(values));
+      toast.success("User added successfully");
+      dispatch(getUsers());
+      close();
       addUserForm.resetForm();
     },
   });
+
   return (
     <form className="flex  flex-col gap-4" onSubmit={addUserForm.handleSubmit}>
       <H5 label={"Add user"} />

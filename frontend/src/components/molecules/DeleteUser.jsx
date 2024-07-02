@@ -2,16 +2,22 @@ import React from "react";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "../../features/users/usersThunks";
-function DeleteUser() {
+import { deleteUser, getUsers } from "../../features/users/usersThunks";
+import { toast } from "react-toastify";
+function DeleteUser({ close }) {
   const id = useSelector((state) => state.users.userID);
   const dispatch = useDispatch();
 
   const userDelete = async () => {
     try {
       await dispatch(deleteUser(id));
+      toast.success("User deleted successfully");
+      close();
+      dispatch(getUsers());
     } catch (error) {
       console.log(error);
+      toast.error("Bad request");
+      close();
     }
   };
   return (
