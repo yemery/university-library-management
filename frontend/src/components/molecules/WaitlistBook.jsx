@@ -2,6 +2,8 @@ import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { waitingListBook } from '../../features/borrow/borrowThunks';
 import { Button, Modal } from "flowbite-react";
+import { toast } from "react-toastify";
+import { booksList } from "../../features/book/bookThunks";
 
 function WaitlistBook() {
     const id = useSelector((state) => state.books.bookID);
@@ -10,9 +12,14 @@ function WaitlistBook() {
   const waitList = async () => {
     try {
         await dispatch(waitingListBook(id));
+        toast.success("Reservation added to the waiting list");
+        close()
+        dispatch(booksList());
        
     } catch (error) {
         console.log(error);
+        toast.error("Bad request");
+        close()
     }
     }
 

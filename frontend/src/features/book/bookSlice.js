@@ -23,7 +23,7 @@ const bookSlice = createSlice({
   extraReducers: (builder) => {
     // Add a new book
     builder.addCase(postBook.fulfilled, (state, action) => {
-      state.books.push(action.payload);
+      console.log("added successfully")
     });
     builder.addCase(postBook.rejected, (action) => {
       console.log("rejected", action);

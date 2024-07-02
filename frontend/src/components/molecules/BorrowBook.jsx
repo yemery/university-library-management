@@ -2,20 +2,24 @@ import React from "react";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { borrowABook } from '../../features/borrow/borrowThunks';
+import { toast } from "react-toastify";
+import { booksList } from "../../features/book/bookThunks";
 
-function BorrowBook() {
+function BorrowBook({close}) {
     const id = useSelector((state) => state.books.bookID);
     const dispatch = useDispatch();
-  const navigate = useNavigate();
 
     const bookBorrow = async () => {
         try {
             await dispatch(borrowABook(id));
-            navigate(0); // refresh the page
+            dispatch(booksList());
+            toast.success("Book borrowed successfully");
+        close()
         } catch (error) {
             console.log(error);
+            toast.error("Bad request");
+        close()
         }
         }
   return (

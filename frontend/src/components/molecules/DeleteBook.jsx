@@ -3,19 +3,23 @@ import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBook } from "../../features/book/bookThunks";
-import { useNavigate } from "react-router-dom";
+import { booksList } from "../../features/book/bookThunks";
+import { toast } from "react-toastify";
 
-function DeleteBook() {
+function DeleteBook({close}) {
   const id = useSelector((state) => state.books.bookID);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const bookDelete = async () => {
     try {
       await dispatch(deleteBook(id));
-      navigate(0); // refresh the page
+      toast.success("Book deleted successfully");
+      dispatch(booksList());
+      close()
     } catch (error) {
       console.log(error);
+      toast.error("Bad request");
+      close()
     }
   };
 

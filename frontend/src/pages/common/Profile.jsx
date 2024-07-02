@@ -16,6 +16,8 @@ import H5 from "../../components/atoms/H5";
 import { useState } from "react";
 import ModalContainer from "../../components/molecules/ModalContainer";
 import UpdatePwdForm from "../../components/molecules/UpdatePwdForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
@@ -57,6 +59,18 @@ const Profile = () => {
       >
         <UpdatePwdForm close = {()=> setOpenModal(false)} />
       </ModalContainer>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

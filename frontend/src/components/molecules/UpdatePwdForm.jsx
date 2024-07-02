@@ -3,9 +3,10 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updatePassword } from "../../features/auth/authThunks";
 import H5 from "../atoms/H5";
+import { toast } from "react-toastify";
 
 const UpdatePwdForm = ({ close }) => {
   const dispatch = useDispatch();
@@ -29,27 +30,12 @@ const UpdatePwdForm = ({ close }) => {
     onSubmit: (values) => {
       dispatch(updatePassword(values));
       setFormSubmitted(true);
+      close();
+      toast.success("Password updated successfully");
     },
   });
 
-  const response = useSelector((state) => state.auth.response);
-  // getting response message after performing an endpoint call
-  useEffect(() => {
-    const emptyResponse = Object.values(response).some(value => value !== '');
-  
-    if (formSubmitted && emptyResponse) {
 
-    const intervalId = setInterval(() => {
-      console.log(response);
-      // toastify call here
-      // closing the modal after getting the response message
-      close();
-    }, 500);
-    
-    // Clear interval on component unmount
-    return () => clearInterval(intervalId);
-    }
-  }, [response, formSubmitted]);
 
   return (
     <form

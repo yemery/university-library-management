@@ -36,9 +36,9 @@ class login(APIView):
         password = request.data["password"]
         user = User.objects.filter(email=email).first()
         if user is None:
-            raise AuthenticationFailed("User not found")
+            return Response({"message": "User not found"}, status=404)
         if not user.check_password(password):
-            raise AuthenticationFailed("Incorrect password")
+            return Response({"message": "Invalid credentials"}, status=401)
         if user is not None:
             refresh = RefreshToken.for_user(user)
             access = refresh.access_token
@@ -47,7 +47,6 @@ class login(APIView):
                     "access": str(access),
                     "refresh": str(refresh),
                     "user": UserSerializer(user).data,
-                    "message": "User logged in successfully",
                 },
                 status=200,
             )

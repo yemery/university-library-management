@@ -11,6 +11,8 @@ import BorrowBook from "../../components/molecules/BorrowBook";
 import BooksSearchFilter from "../../components/molecules/BooksSearchFilter";
 import { Pagination } from "flowbite-react";
 import WaitlistBook from "../../components/molecules/WaitlistBook";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Books() {
   const dispatch = useDispatch();
@@ -27,27 +29,27 @@ function Books() {
   const [modalForm, setModalForm] = useState(null);
 
   const role = useSelector((state) => state.auth.role);
-  // const books = useSelector((state) => state.books.books);
 
   useEffect(() => {
     dispatch(booksList({ page: currentPage}));
   }, [currentPage]);
-  // useEffect(() => {
-  //   // console.log("books", books);
-  //   dispatch(booksList({ page: currentPage }));
-  // }, [currentPage]);
+
 
   const handleModal = (content) => {
     setOpenModal(true);
     setModalForm(content);
   };
 
+  const close = () => {
+    setOpenModal(false);
+  }
+
   const forms = {
-    addBook: <AddBookForm />,
-    editBook: <EditBookForm />,
-    deleteBook: <DeleteBook />,
-    borrowBook: <BorrowBook />,
-    waitlistBook: <WaitlistBook/>,
+    addBook: <AddBookForm  close={close} />,
+    editBook: <EditBookForm  close={close}/>,
+    deleteBook: <DeleteBook  close={close}/>,
+    borrowBook: <BorrowBook  close={close}/>,
+    waitlistBook: <WaitlistBook close={close}/>,
   };
 
   return (
@@ -80,6 +82,18 @@ function Books() {
       <div className="flex overflow-x-auto sm:justify-center">
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
     </div>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

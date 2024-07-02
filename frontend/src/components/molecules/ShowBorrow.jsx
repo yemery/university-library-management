@@ -11,7 +11,7 @@ import {
 
 function ShowBorrow({role}) {
   const borrow = useSelector((state) => state.borrows.borrow);
-
+  
   return (
     // later adding container for layout and styling to not repeat the same code
     <div className="">
@@ -71,7 +71,7 @@ function ShowBorrow({role}) {
       </div>
        )}
       </div>
-      
+  
     </div>
   );
 }

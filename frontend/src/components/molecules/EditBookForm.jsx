@@ -6,13 +6,13 @@ import ErrorMessage from "../../components/atoms/ErrorMessage";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import { updateBook } from "../../features/book/bookThunks";
-import { useNavigate } from "react-router-dom";
 import H5 from "../atoms/H5";
 import { Label, Select } from "flowbite-react";
+import { toast } from "react-toastify";
+import { booksList } from "../../features/book/bookThunks";
 
-function EditupdateForm() {
+function EditupdateForm({close}) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const book = useSelector((state) => state.books.book);
 
@@ -39,9 +39,13 @@ function EditupdateForm() {
           is_available: values.is_available == "1" ? true : false,
         };
         await dispatch(updateBook(values));
-        navigate(0); // refresh the page
+        toast.success("Book updated successfully");
+        close()
+        dispatch(booksList());
       } catch (error) {
         console.log(error);
+        toast.error("Bad request");
+        close()
       }
     },
   });

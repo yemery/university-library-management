@@ -5,7 +5,7 @@ import {
   borrowsList,
   studentBorrows,
 } from "../../features/borrow/borrowThunks";
-import { Button } from "flowbite-react";
+import { Button, Toast } from "flowbite-react";
 import ModalContainer from "../../components/molecules/ModalContainer";
 import BorrowsTable from "../../components/atoms/BorrowsTable";
 import ShowBorrow from "../../components/molecules/ShowBorrow";
@@ -13,7 +13,8 @@ import EditBorrow from "../../components/molecules/EditBorrow";
 import EditBorrowDates from "../../components/molecules/EditBorrowDates";
 import BorrowsSearchFilter from "../../components/molecules/BorrowsSearchFilter";
 import { Pagination } from "flowbite-react";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Borrow() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,10 +35,14 @@ function Borrow() {
     setModalContent(content);
   };
 
+  const close = () => {
+    setOpenModal(false);
+  }
+
   const contents = {
     showBorrow: <ShowBorrow role={role} />,
-    editBorrow: <EditBorrow />,
-    editBorrowDates: <EditBorrowDates />,
+    editBorrow: <EditBorrow close={close}/>,
+    editBorrowDates: <EditBorrowDates close={close}/>,
   };
   const totalPages = useSelector((state) => state.borrows.totalPages);
 
@@ -71,6 +76,18 @@ function Borrow() {
       >
         {contents[modalContent]}
       </ModalContainer>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

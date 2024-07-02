@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../../features/auth/authThunks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,26 +39,12 @@ const Login = () => {
         .required("Required"),
     }),
     onSubmit: async (values) => {
-      try {
-        await dispatch(authenticate(values));
-        const role = localStorage.getItem("role");
-        if (role) {
-          navigate(`/${role}/dashboard`);
-        }
-      } catch (error) {
-        console.error("Authentication error:", error);
+      const response = await dispatch(authenticate(values));
+      if (response.error.code == "ERR_BAD_REQUEST") {
+        toast.error("Invalid credentials");
       }
     },
   });
-
-  const response = useSelector((state) => state.auth.response);
-  // getting response message after performing an endpoint call
-  useEffect(() => {
-    if (response.message) {
-      console.log(response.message);
-      // toastify call here
-    }
-  }, [response.message]);
 
   return (
     <div className="flex md:flex-row flex-col w-full h-screen">
@@ -111,6 +99,18 @@ const Login = () => {
           <Button text="Submit" />
         </form>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

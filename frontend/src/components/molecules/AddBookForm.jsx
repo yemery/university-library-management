@@ -5,11 +5,11 @@ import ErrorMessage from "../../components/atoms/ErrorMessage";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import { postBook } from "../../features/book/bookThunks";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { booksList } from "../../features/book/bookThunks";
 
-function AddBookForm() {
+function AddBookForm({close}) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const bookForm = useFormik({
     initialValues: {
@@ -27,9 +27,13 @@ function AddBookForm() {
     onSubmit: async (values) => {
       try {
         await dispatch(postBook(values));
-        navigate(0); // refresh the page
+        toast.success("Book added successfully");
+        close()
+        dispatch(booksList());
       } catch (error) {
         console.log(error);
+        toast.error("Bad request");
+        close()
       }
     },
   });
@@ -100,6 +104,9 @@ function AddBookForm() {
           <Button text="Submit" />
         </div>
       </div>
+
+     
+      
     </form>
   );
 }

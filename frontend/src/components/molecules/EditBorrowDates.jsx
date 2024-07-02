@@ -1,5 +1,4 @@
 import React from "react";
-// import { Datepicker } from "flowbite-react";
 import H5 from "../atoms/H5";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,15 +6,13 @@ import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../atoms/Button";
 import { updateBorrowRecord } from "../../features/borrow/borrowThunks";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import ErrorMessage from "../atoms/ErrorMessage";
+import { borrowsList } from "../../features/borrow/borrowThunks";
+import { toast } from "react-toastify";
 
-const Editborrow_dates = () => {
+const Editborrow_dates = ({close}) => {
   const dispatch = useDispatch();
-  const navigator = useNavigate();
-  // const borrow_date = useSelector((state) => state.borrows.borrow.borrow_date);
-  // const return_date = useSelector((state) => state.borrows.borrow.return_date);
 
   const borrow = useSelector((state) => state.borrows.borrow);
 
@@ -25,9 +22,8 @@ const Editborrow_dates = () => {
       return_date: borrow.return_date == null ? "" : borrow.return_date,
     },
     validationSchema: Yup.object({
-      borrow_date: Yup.date().required("Required"),
+      borrow_date: Yup.date(),
       return_date: Yup.date()
-        .required("Return date is required")
         .min(
           Yup.ref("borrow_date"),
           "Return date must be greater than borrow date"
@@ -44,9 +40,9 @@ const Editborrow_dates = () => {
       };
 
       dispatch(updateBorrowRecord({ id: borrow.id, ...submitValues }));
-      navigator(0);
-      // console.log(submitValues);
-      // borrowthunk patch call
+      toast.success("Borrow dates updated successfully");
+      close()
+      dispatch(borrowsList());
     },
   });
 
