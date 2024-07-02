@@ -7,6 +7,8 @@ import ModalContainer from "../../components/molecules/ModalContainer";
 import UsersSearchFilter from "../../components/molecules/UsersSearchFilter";
 import DeleteUser from "../../components/molecules/DeleteUser";
 import UpdateUser from "../../components/molecules/UpdateUser";
+import { Button } from "flowbite-react";
+import AddUser from "../../components/molecules/AddUser";
 
 function Users() {
   const dispatch = useDispatch();
@@ -25,8 +27,9 @@ function Users() {
   const [modalForm, setModalForm] = useState(null);
 
   const modals = {
-    updatePwd: <UpdateUser/>,
+    updatePwd: <UpdateUser />,
     deleteUser: <DeleteUser />,
+    addUser: <AddUser />,
   };
   const handleModal = (content) => {
     setOpenModal(true);
@@ -35,7 +38,20 @@ function Users() {
 
   return (
     <div>
-      <div className="flex flex-col gap-8">
+      <div className="flex gap-8">
+        <Button
+          className="w-80 bg-black  hover:opacity-75 text-white"
+          onClick={() => handleModal("addUser")}
+        >
+          Add User
+        </Button>
+
+        <Button
+          className="w-80 bg-black  hover:opacity-75 text-white"
+          // onClick={() => }
+        >
+          Import Users
+        </Button>
         <UsersSearchFilter />
       </div>
 

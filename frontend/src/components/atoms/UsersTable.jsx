@@ -54,6 +54,10 @@ function UsersTable({ editModal, deleteModal }) {
                   <Badge color="success" className="w-fit">
                     Librarian
                   </Badge>
+                ) : user.role == "admin" ? (
+                  <Badge color="red" className="w-fit">
+                    Admin
+                  </Badge>
                 ) : (
                   <Badge color="warning" className="w-fit">
                     Student

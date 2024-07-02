@@ -19,9 +19,8 @@ from django.core.paginator import Paginator, EmptyPage
 import math
 from django.conf import settings
 
-
-# add isAdmin perm
 class register(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():

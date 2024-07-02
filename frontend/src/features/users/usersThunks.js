@@ -29,4 +29,13 @@ const updateUserPwd = createAsyncThunk("admin-update-pwd/", async (data) => {
   return response.data;
 });
 
-export { getUsers, deleteUser, updateUserPwd };
+const addUser = createAsyncThunk("register/", async (data) => {
+  const response = await api.post("register/", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+});
+
+export { getUsers, deleteUser, updateUserPwd, addUser };
