@@ -14,6 +14,7 @@ urlpatterns=[
     path('export-users/', ExportUsers.as_view()),
     path('update-pwd/', UpdatePassword.as_view()),
     path('users-info/', GetUsers.as_view()),
-    path('admin-update-pwd/', UpdateUserPassword.as_view()),
+    path('admin-update-pwd/<int:pk>', UpdateUserPassword.as_view()),
+    path('delete-user/<int:pk>/', DeleteUser.as_view()),
     
 ]

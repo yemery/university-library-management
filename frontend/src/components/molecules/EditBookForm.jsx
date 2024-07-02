@@ -113,14 +113,14 @@ function EditupdateForm() {
           onChange={updateForm.handleChange}
           onBlur={updateForm.handleBlur}
         >
-         <option value="1" selected={updateForm.values.is_available == true}>
+          <option value="1" selected={updateForm.values.is_available == true}>
             Available
           </option>
           <option value="0" selected={updateForm.values.is_available == false}>
             Borrowed
           </option>
         </Select>
-       
+
         {updateForm.touched.is_available && updateForm.errors.is_available && (
           <ErrorMessage message={updateForm.errors.is_available} />
         )}

@@ -16,4 +16,10 @@ const waitlistSelectOptions = [
   { value: "0", label: "Not available" },
 ];
 
-export { borrowSelectOptions, booksSelectOptions, waitlistSelectOptions };
+const usersSelectOptions = [
+  { value: "", label: "Role" },
+  { value: "librarian", label: "Librarian" },
+  { value: "student", label: "Student" },
+];
+
+export { borrowSelectOptions, booksSelectOptions, waitlistSelectOptions, usersSelectOptions };

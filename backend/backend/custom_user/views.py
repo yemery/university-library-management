@@ -158,10 +158,16 @@ class GetUsers(APIView):
 
 class UpdateUserPassword(APIView):
     permission_classes = [IsAuthenticated, IsAdmin]
-    def patch(self, request):
-        user_id = request.data['user_id']
+    def patch(self, request, pk):
         new_password = request.data['new_password']
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(id=pk)
         user.set_password(new_password)
         user.save()
         return Response({'message': 'Password updated successfully'}, status=200)
+
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    def delete(self, request, pk):
+        user = User.objects.get(id=pk)
+        print(user)
+        return Response({'message': 'User deleted successfully'}, status=200)
