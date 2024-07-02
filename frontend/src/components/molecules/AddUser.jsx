@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import SelectFilter from "../atoms/SelectFilter";
 import { addUser } from "../../features/users/usersThunks";
+import { usersSelectOptions } from "../../assets/filteringOptions";
 
 function AddUser() {
   const dispatch = useDispatch();
@@ -122,12 +123,7 @@ function AddUser() {
           name="role"
           value={addUserForm.values.role}
           change={addUserForm.handleChange}
-          options={[
-            { value: "", label: "Select a role" },
-            { value: "admin", label: "Admin" },
-            { value: "librarian", label: "Librarian" },
-            { value: "student", label: "Student" },
-          ]}
+          options={usersSelectOptions}
         />
 
         {addUserForm.touched.role && addUserForm.errors.role && (

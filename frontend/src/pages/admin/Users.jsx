@@ -38,21 +38,29 @@ function Users() {
 
   return (
     <div>
-      <div className="flex gap-8">
-        <Button
-          className="w-80 bg-black  hover:opacity-75 text-white"
-          onClick={() => handleModal("addUser")}
-        >
-          Add User
-        </Button>
-
-        <Button
-          className="w-80 bg-black  hover:opacity-75 text-white"
-          // onClick={() => }
-        >
-          Import Users
-        </Button>
+      <div className="flex flex-col gap-4">
         <UsersSearchFilter />
+        <div className="flex gap-8">
+          <Button
+            className="w-80 bg-black  hover:opacity-75 text-white"
+            onClick={() => handleModal("addUser")}
+          >
+            Add User
+          </Button>
+
+          <Button
+            className="w-80 bg-black  hover:opacity-75 text-white"
+            // onClick={() => }
+          >
+            Import Users
+          </Button>
+          <Button
+            className="w-80 bg-black  hover:opacity-75 text-white"
+            // onClick={() => }
+          >
+            Export Users
+          </Button>
+        </div>
       </div>
 
       <UsersTable
