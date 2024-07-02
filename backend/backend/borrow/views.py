@@ -7,7 +7,7 @@ from book.models import Book
 from book.serializers import BookSerializer 
 from .models import book_borrow
 from .serializers import BorrowSerializer , BorrowDetailSerializer
-from custom_user.permissions import IsStudent, IsLibrarian, IsAdmin , IsLibrarianOrIsStudent
+from custom_user.permissions import IsStudent, IsLibrarian, IsAdmin , IsLibrarianOrIsStudent, IsAdminOrIsLibrarian
 from custom_user.models import User
 from book.models import Book
 from book.serializers import BookSerializer
@@ -203,7 +203,7 @@ class CancelBorrow(APIView):
             )
 
 class MostBorrowedBooks(APIView):
-    permission_classes = [IsAuthenticated, IsLibrarianOrIsStudent] # IsAdmin not working
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         borrows = book_borrow.objects.all()
@@ -221,7 +221,7 @@ class MostBorrowedBooks(APIView):
         return Response(book_list, status=status.HTTP_200_OK)
 
 class MostBorrowingStudents(APIView):
-    permission_classes = [IsAuthenticated, IsLibrarian]
+    permission_classes = [IsAuthenticated, IsAdminOrIsLibrarian]
 
     def get(self, request):
         borrows = book_borrow.objects.all()
@@ -235,7 +235,7 @@ class MostBorrowingStudents(APIView):
         return Response(user_list, status=status.HTTP_200_OK)
 
 class BorrowsStatus(APIView):
-    permission_classes = [IsAuthenticated, IsLibrarian]
+    permission_classes = [IsAuthenticated, IsAdminOrIsLibrarian]
 
     def get(self, request):
         status_list = []
@@ -251,14 +251,9 @@ class BorrowsStatus(APIView):
 
         return Response(status_list, status=status.HTTP_200_OK)
     
-
-        
-        
-        
-    
 #  number of non returned borrows for authenticated student
 class NonReturnedBorrows(APIView):
-    permission_classes=[IsAuthenticated,IsLibrarian]
+    permission_classes=[IsAuthenticated,IsAdminOrIsLibrarian]
     def get(self, request):
         borrows = book_borrow.objects.filter(status='confirmed',return_date__isnull=True)
         count=borrows.count()

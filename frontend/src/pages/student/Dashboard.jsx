@@ -1,11 +1,25 @@
+import { useDispatch, useSelector } from "react-redux";
 import BarChartType from "../../components/charts/BarChartType";
+import {
+  mostBorrowedBooks,
+  onwNonReturnedBorrows,
+  ownBorrowedStatus,
+  ownBorrowsStats,
+} from "../../features/stats/statsThunks";
+import { useEffect } from "react";
+import PieChartType from "../../components/charts/PieChartType";
+import CardStats from "../../components/atoms/CardStats";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const ownedStatsBorrowed = useSelector(state => state.stats.ownBorrowedBooks);
-  const ownedBorrowedStatus = useSelector(state => state.stats.myBorrows);
+  const ownedStatsBorrowed = useSelector(
+    (state) => state.stats.ownBorrowedBooks
+  );
+  const ownedBorrowedStatus = useSelector((state) => state.stats.myBorrows);
   const mostBorrowed = useSelector((state) => state.stats.mostBorrowedBooks);
-  const nonReturnedBorrows = useSelector((state) => state.stats.nonReturnedBorrows);
+  const nonReturnedBorrows = useSelector(
+    (state) => state.stats.nonReturnedBorrows
+  );
 
   useEffect(() => {
     dispatch(ownBorrowsStats());
@@ -33,3 +47,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;

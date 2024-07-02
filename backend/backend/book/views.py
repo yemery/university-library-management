@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from custom_user.permissions import IsAdmin, IsLibrarian, IsStudent
+from custom_user.permissions import IsAdmin, IsLibrarian, IsStudent, IsAdminOrIsLibrarian
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
@@ -10,6 +10,7 @@ import math
 from django.core.paginator import Paginator,EmptyPage
 from borrow.models import book_borrow
 from custom_user.permissions import IsLibrarianOrIsStudent
+
 @permission_classes([IsAuthenticated,IsLibrarianOrIsStudent])
 class BooksList(APIView):
     def get(self, request):
@@ -110,7 +111,7 @@ class DeleteBook(APIView):
                 'error': 'Book does not exist'
             }, status=404)
 
-@permission_classes([IsLibrarian])
+@permission_classes([IsAdminOrIsLibrarian])
 class BookAvailabilityStat(APIView):
     def get(self, request):
         availability_list = []

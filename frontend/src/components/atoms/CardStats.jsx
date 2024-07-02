@@ -3,7 +3,7 @@ import { Card } from "flowbite-react";
 
 const CardStats = ({stat}) => {
   return (
-    <Card className="w-fit h-fit flex items-center justify-center text-center bg-white dark:bg-gray-800">
+    <Card className="w-40 h-40 flex items-center justify-center text-center bg-white dark:bg-gray-800">
       <div>
         <h5 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
           {stat.data}
