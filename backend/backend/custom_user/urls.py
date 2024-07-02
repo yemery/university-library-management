@@ -13,5 +13,6 @@ urlpatterns=[
     path('import-users/', ImportUsers.as_view()),
     path('export-users/', ExportUsers.as_view()),
     path('update-pwd/', UpdatePassword.as_view()),
+    path('users-info/', GetUsers.as_view()),
     
 ]

@@ -15,6 +15,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .permissions import IsAdmin, IsLibrarian, IsStudent
 from django.http import HttpResponse
 import pandas as pd
+from django.core.paginator import Paginator,EmptyPage
+import math
+
 # add isAdmin perm
 class register(APIView):
     def post(self, request):
@@ -121,3 +124,35 @@ class UpdatePassword(APIView):
         user.set_password(new_password)
         user.save()
         return Response({'message': 'Password updated successfully'}, status=200)
+
+class GetUsers(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    def get(self, request):
+        users = User.objects.filter(role__in=['librarian', 'student']).values('id','first_name', 'last_name', 'email', 'role')
+        users_count = users.filter(role__in=['librarian', 'student']).count()
+        total_pages = math.ceil(users_count/10)
+
+        user = request.query_params.get('user', None)
+        role = request.query_params.get('role', None)
+        if user:
+            user = user.strip()
+        if user is not None:
+            users = users.filter(first_name__icontains=user) | users.filter(last_name__icontains=user)
+        if role:
+            users = users.filter(role=role)
+
+        page=request.query_params.get('page',default=1)
+        paginator=Paginator(users,per_page=10)
+
+        try:
+            users=paginator.page(number=page)
+        except EmptyPage: 
+                return Response({
+                    'error': 'No users found'
+                }, status=404)
+
+        return Response({
+            'users': UserSerializer(users, many=True).data,
+            'total_pages':total_pages
+        }, status=200)
+
