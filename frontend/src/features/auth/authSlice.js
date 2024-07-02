@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authenticate, logout, updatePassword } from "./authThunks";
+import { authenticate, logout, updatePassword, getUserInfo } from "./authThunks";
 
 const initialState = {
   // later we will add the user objectt using decrpyt jwt token
@@ -45,8 +45,14 @@ const authSlice = createSlice({
     });
     builder.addCase(updatePassword.rejected, (state, action) => {
       state.updatePwd = action.payload;
-
     });
+    builder.addCase(getUserInfo.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
+    builder.addCase(getUserInfo.rejected, (state, action) => {
+      state.user = {};
+    });
+
   },
 });
 

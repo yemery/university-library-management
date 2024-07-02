@@ -37,4 +37,12 @@ const updatePassword = createAsyncThunk("update-pwd/", async (data) => {
   return { status: response.status, message: response.data.message };
 });
 
-export { authenticate, logout, updatePassword };
+const getUserInfo = createAsyncThunk("user-info/", async (id) => {
+  const response = await api.get(`get-user/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+  return response.data;
+});
+export { authenticate, logout, updatePassword, getUserInfo};

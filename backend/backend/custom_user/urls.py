@@ -16,5 +16,6 @@ urlpatterns=[
     path('users-info/', GetUsers.as_view()),
     path('delete-user/<int:pk>/', DeleteUser.as_view()),
     path('update-user/<int:pk>/', UpdateUserPassword.as_view()),
+    path('get-user/<int:pk>/', GetUser.as_view()),
     
 ]

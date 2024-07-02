@@ -197,3 +197,11 @@ class DeleteUser(APIView):
         user = User.objects.filter(id=pk).first()
         user.delete()
         return Response({'message': 'User deleted successfully'}, status=200)
+
+
+class GetUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        user = User.objects.filter(id=pk).first()
+        return Response(UserSerializer(user).data, status=200)
