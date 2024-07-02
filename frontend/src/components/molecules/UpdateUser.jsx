@@ -27,6 +27,7 @@ const  UpdateUser = () =>{
     onSubmit: (values) => {
       // console.log("submitting password form")
       dispatch(updateUserPwd({id:userID, ...values}));
+      passwordForm.resetForm();
     },
   });
   
