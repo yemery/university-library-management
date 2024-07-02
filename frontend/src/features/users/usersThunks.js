@@ -21,7 +21,7 @@ const deleteUser = createAsyncThunk("delete-user/", async (id) => {
 });
 
 const updateUserPwd = createAsyncThunk("admin-update-pwd/", async (data) => {
-  const response = await api.patch(`admin-update-pwd/${data.id}/`, data, {
+  const response = await api.patch(`update-user/${data.id}/`, data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access")}`,
     },

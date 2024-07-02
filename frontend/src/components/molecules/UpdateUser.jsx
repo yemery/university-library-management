@@ -1,74 +1,75 @@
 import React from "react";
-import { useFormik } from "formik";
 import ErrorMessage from "../../components/atoms/ErrorMessage";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { updateUserPwd } from "../../features/users/usersThunks";
-import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import H5 from "../atoms/H5";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, TextInput } from "flowbite-react";
+import { updateUserPwd } from "../../features/users/usersThunks";
 
-export default function UpdateUser() {
+const  UpdateUser = () =>{
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.users.userID);
+  // prb to from <here to get id of user
+  const userID= useSelector((state) => state.users.userID);
 
   const passwordForm = useFormik({
     initialValues: {
-      password: "",
-      confirmPassword: "",
+      new_password: "",
+      confirm_password: "",
     },
     validationSchema: Yup.object({
-      password: Yup.string()
-        .required("Required")
-        .min(8, "Password is too short"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
+      new_password: Yup.string().required("Required"),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("new_password"), null], "Passwords does not match")
         .required("Required"),
     }),
     onSubmit: (values) => {
-      dispatch(updateUserPwd({ id: id, new_password: values.password }));
+      // console.log("submitting password form")
+      dispatch(updateUserPwd({id:userID, ...values}));
     },
   });
+  
 
   return (
-    <form onSubmit={passwordForm.handleSubmit}>
-      <div className="space-y-6">
-        <H5 label="Edit user password" />
-        <div>
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            placeholder="Enter new password"
-            value={passwordForm.values.password}
-            onChange={passwordForm.handleChange}
-            onBlur={passwordForm.handleBlur}
-          />
-          {passwordForm.touched.password && passwordForm.errors.password && (
-            <ErrorMessage error={passwordForm.errors.password} />
+    <form className="flex  flex-col gap-4" onSubmit={passwordForm.handleSubmit}>
+      <div>
+        <H5 label={"Update Password"} />
+        <TextInput
+          id="new_password"
+          type="password"
+          name="new_password"
+          placeholder="New password"
+          value={passwordForm.values.new_password}
+          onChange={passwordForm.handleChange}
+          onBlur={passwordForm.handleBlur}
+        />
+        {passwordForm.touched.new_password &&
+          passwordForm.errors.new_password && (
+            <ErrorMessage message={passwordForm.errors.new_password} />
           )}
-        </div>
 
-        <div>
-          <Input
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm new password"
-            value={passwordForm.values.confirmPassword}
-            onChange={passwordForm.handleChange}
-            onBlur={passwordForm.handleBlur}
-          />
-          {passwordForm.touched.confirmPassword &&
-            passwordForm.errors.confirmPassword && (
-              <ErrorMessage error={passwordForm.errors.confirmPassword} />
-            )}
-        </div>
-
-        <div>
-          <Button type="submit" color="success" text="Update Password" />
-        </div>
       </div>
+      <div>
+        <TextInput
+          id="confirm_password"
+          type="password"
+          name="confirm_password"
+          placeholder="Confirm password"
+          value={passwordForm.values.confirm_password}
+          onChange={passwordForm.handleChange}
+          onBlur={passwordForm.handleBlur}
+          />
+
+        {passwordForm.touched.confirm_password &&
+          passwordForm.errors.confirm_password && (
+            <ErrorMessage message={passwordForm.errors.confirm_password} />
+          )}
+      </div>
+           <Button type="submit" className="bg-black">Update Password</Button>  
+
     </form>
   );
 }
+
+export default UpdateUser;

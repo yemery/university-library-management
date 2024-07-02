@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getUsers, deleteUser, updateUserPwd } from "./usersThunks";
-import { act } from "react";
+// import { act } from "react";
 
 const initialState = {
     users: [],
@@ -37,7 +37,7 @@ const usersSlice = createSlice({
 
         // Update user password
         builder.addCase(updateUserPwd.fulfilled, (state) => {
-            console.log("fulfilled", action);
+            console.log("Password updated successfully");
         });
         builder.addCase(updateUserPwd.rejected, (action) => {
             console.log("rejected", action);
