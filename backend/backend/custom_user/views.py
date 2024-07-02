@@ -156,3 +156,12 @@ class GetUsers(APIView):
             'total_pages':total_pages
         }, status=200)
 
+class UpdateUserPassword(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    def patch(self, request):
+        user_id = request.data['user_id']
+        new_password = request.data['new_password']
+        user = User.objects.get(id=user_id)
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password updated successfully'}, status=200)
