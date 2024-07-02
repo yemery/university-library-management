@@ -194,8 +194,7 @@ class UpdateUserPassword(APIView):
 
 class DeleteUser(APIView):
     permission_classes = [IsAuthenticated, IsAdmin]
-
     def delete(self, request, pk):
-        user = User.objects.get(id=pk)
-        print(user)
-        return Response({"message": "User deleted successfully"}, status=200)
+        user = User.objects.filter(id=pk).first()
+        user.delete()
+        return Response({'message': 'User deleted successfully'}, status=200)
