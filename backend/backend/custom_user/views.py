@@ -144,22 +144,27 @@ class GetUsers(APIView):
     permission_classes = [IsAuthenticated, IsAdmin]
 
     def get(self, request):
-        users = User.objects.filter(role__in=["librarian", "student"]).values(
-            "id", "first_name", "last_name", "email", "role"
-        )
-        users_count = users.filter(role__in=["librarian", "student"]).count()
-        total_pages = math.ceil(users_count / 10)
+        # users = User.objects.filter(role__in=["librarian", "student"]).values(
+        #     "id", "first_name", "last_name", "email", "role"
+        # )
+        # users_count = users.filter(role__in=["librarian", "student"]).count()
+        users= User.objects.all()
+        total_pages = math.ceil( users.count() / 10)
 
-        user = request.query_params.get("user", None)
-        role = request.query_params.get("role", None)
-        if user:
-            user = user.strip()
-        if user is not None:
-            users = users.filter(first_name__icontains=user) | users.filter(
-                last_name__icontains=user
-            )
-        if role:
-            users = users.filter(role=role)
+        # we will get all users for /get-users/ endpoint
+        # then if the user choosed to filter by role in the form of export users
+        # we will only get the filter value that will we either libriran or student directly from the query params
+        # i suggest having new endpoint for export cus its has its data
+        # user = request.query_params.get(""
+        # role = request.query_params.get("role", None)
+        # if user:
+        #     user = user.strip()
+        # if user is not None:
+        #     users = users.filter(first_name__icontains=user) | users.filter(
+        #         last_name__icontains=user
+        #     )
+        # if role:
+        #     users = users.filter(role=role)
 
         page = request.query_params.get("page", default=1)
         paginator = Paginator(users, per_page=10)
