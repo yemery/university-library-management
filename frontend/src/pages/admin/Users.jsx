@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ImportUsers from "../../components/molecules/ImportUsers";
 import { MdDisplaySettings } from "react-icons/md";
+import ExportUsers from "../../components/molecules/ExportUsers";
 // import { useDispatch,useSelector } from "react-redux";
 function Users() {
   const dispatch = useDispatch();
@@ -39,13 +40,14 @@ function Users() {
     deleteUser: <DeleteUser close={close} />,
     addUser: <AddUser close={close} />,
     importUsers: <ImportUsers close={close} />,
+    exportUsers: <ExportUsers close={close} />,
   };
 
   const handleModal = (content) => {
     setOpenModal(true);
     setModalForm(content);
   };
- 
+
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -66,7 +68,7 @@ function Users() {
           </Button>
           <Button
             className="w-80 bg-black  hover:opacity-75 text-white"
-            // onClick={() => handleImport() }
+            onClick={() => handleModal("exportUsers")}
           >
             Export Users
           </Button>
