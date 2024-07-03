@@ -20,12 +20,16 @@ import math
 from django.conf import settings
 
 class register(APIView):
-    permission_classes = [IsAuthenticated, IsAdmin]
+    # for testing 
+    # permission_classes = [IsAuthenticated, IsAdmin]
+    #been fixed by replacing fields by only attributes we wanna send instead of putting __all__ 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save() 
+            # print('serializer data', serializer.data)
             return Response(serializer.data, status=201)
+            # return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
 
