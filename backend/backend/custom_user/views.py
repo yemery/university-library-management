@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ExportUserSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
@@ -57,14 +57,14 @@ class login(APIView):
             )
 
 
-class user_infos(APIView):
-    permission_classes = [IsAuthenticated, IsStudent]
+# class user_infos(APIView):
+#     permission_classes = [IsAuthenticated, IsStudent]
 
-    def get(self, request):
-        user = request.user
-        return Response(
-            {"user": UserSerializer(user).data, "role": user.role}, status=200
-        )
+#     def get(self, request):
+#         user = request.user
+#         return Response(
+#             {"user": UserSerializer(user).data, "role": user.role}, status=200
+#         )
 
 
 class logout(APIView):
@@ -127,12 +127,22 @@ class ExportUsers(APIView):
 
     def get(self, request):
         users = User.objects.all()
+
+        role = request.query_params.get("role", None)
+        if role:
+            if role == "all":
+                users = User.objects.all()
+            else:
+                users = User.objects.filter(role=role)
+            
+        users = ExportUserSerializer(users, many=True).data
+        
         data = pd.DataFrame(
-            list(users.values())
-        )  # convert the queryset to a dataframe using the values() method
+            list(users)
+        ) # convert the queryset to a dataframe using the values() method
         # data.to_csv('users.csv', index=False)
         # send the file as a response
-        response = HttpResponse(data.to_csv(), content_type="text/csv")
+        response = HttpResponse(data.to_csv(index=False), content_type="text/csv")
         response["Content-Disposition"] = "attachment; filename=users.csv"
 
         return response

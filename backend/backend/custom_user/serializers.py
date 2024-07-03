@@ -33,3 +33,16 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(password)  # function used to hash the password
         user.save()
         return user
+
+
+class ExportUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "role"
+        ]
+
+        

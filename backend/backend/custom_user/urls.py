@@ -8,7 +8,7 @@ urlpatterns=[
     # path('logout/', LogoutView.as_view()),
     path('register/', register.as_view()),
     path('login/', login.as_view()),
-    path('user-infos/', user_infos.as_view()),
+    # path('user-infos/', user_infos.as_view()),
     path('logout-user/', logout.as_view()),
     path('import-users/', ImportUsers.as_view()),
     path('export-users/', ExportUsers.as_view()),

@@ -8,6 +8,7 @@ import ErrorMessage from "../atoms/ErrorMessage";
 import { usersSelectOptions } from "../../assets/filteringOptions";
 import SelectFilter from "../atoms/SelectFilter";
 import { toast } from "react-toastify";
+import { exportUsers } from "../../features/users/usersThunks";
 
 function ExportUsers({ close }) {
   const dispatch = useDispatch();
@@ -19,8 +20,7 @@ function ExportUsers({ close }) {
       role: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      //   dispatch();
+      dispatch(exportUsers({ role: values.role }));
       close();
     },
   });
@@ -33,7 +33,7 @@ function ExportUsers({ close }) {
           name="role"
           value={exportForm.values.role}
           change={exportForm.handleChange}
-          options={[...usersSelectOptions, { value: "all", label: "all" }]}
+          options={[...usersSelectOptions, { value: "all", label: "All" }]}
         />
         {exportForm.errors.role && exportForm.touched.role && (
           <ErrorMessage message={exportForm.errors.role} />
