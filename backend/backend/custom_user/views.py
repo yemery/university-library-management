@@ -19,14 +19,15 @@ from django.core.paginator import Paginator, EmptyPage
 import math
 from django.conf import settings
 
+
 class register(APIView):
-    # for testing 
+    # for testing
     # permission_classes = [IsAuthenticated, IsAdmin]
-    #been fixed by replacing fields by only attributes we wanna send instead of putting __all__ 
+    # been fixed by replacing fields by only attributes we wanna send instead of putting __all__
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save() 
+            serializer.save()
             # print('serializer data', serializer.data)
             return Response(serializer.data, status=201)
             # return Response(serializer.data, status=201)
@@ -86,21 +87,25 @@ class ImportUsers(APIView):
         # extract the file excem from the request
         try:
             file = request.FILES["file"]
-            # read the file
-            data = pd.read_csv(file)
-            # iterate over the rows without the column names
+            # read the file as csv
+            data = pd.read_csv(file, delimiter=";")
+            # the error here is was by observing the wway data been returned so i added this
+            data = pd.DataFrame(data)  # dataframe is for framing
             for i, row in data.iterrows():
-                # create a user for each row
-                # user = User.objects.create_user(
-                #     email=row['email'],
-                #     role=row['role'],
-                #     first_name=row['first_name'],
-                #     last_name=row['last_name'],
-                #     password='password'
-                # )
-                # user.save()
-                print(row)
-            return Response({"message": "Users imported successfully"}, status=201)
+                # print(row['email'])
+                user = User.objects.create_user(
+                    email=row["email"],
+                    role=row["role"],
+                    first_name=row["first_name"],
+                    last_name=row["last_name"],
+                    password="password",
+                )
+                user.save()
+                
+
+            return Response({"message": "Password updated successfully"}, status=201)
+            
+
         except Exception as e:
             print(e)
             return Response({"error": str(e)}, status=400)
@@ -148,8 +153,8 @@ class GetUsers(APIView):
         #     "id", "first_name", "last_name", "email", "role"
         # )
         # users_count = users.filter(role__in=["librarian", "student"]).count()
-        users= User.objects.all()
-        total_pages = math.ceil( users.count() / 10)
+        users = User.objects.all()
+        total_pages = math.ceil(users.count() / 10)
 
         # we will get all users for /get-users/ endpoint
         # then if the user choosed to filter by role in the form of export users
@@ -166,6 +171,7 @@ class GetUsers(APIView):
         # if role:
         #     users = users.filter(role=role)
 
+        # removed thses cus also getting users wasnt working
         page = request.query_params.get("page", default=1)
         paginator = Paginator(users, per_page=10)
 
@@ -203,10 +209,11 @@ class UpdateUserPassword(APIView):
 
 class DeleteUser(APIView):
     permission_classes = [IsAuthenticated, IsAdmin]
+
     def delete(self, request, pk):
         user = User.objects.filter(id=pk).first()
         user.delete()
-        return Response({'message': 'User deleted successfully'}, status=200)
+        return Response({"message": "User deleted successfully"}, status=200)
 
 
 class GetUser(APIView):
