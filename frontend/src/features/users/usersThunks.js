@@ -38,5 +38,14 @@ const addUser = createAsyncThunk("register/", async (data) => {
   return response.data;
 });
 
+const importUsers = createAsyncThunk("import-users/", async (data) => {
+  const response = await api.post("import-users/", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+});
 
-export { getUsers, deleteUser, updateUserPwd, addUser };
+export { getUsers, deleteUser, updateUserPwd, addUser, importUsers };

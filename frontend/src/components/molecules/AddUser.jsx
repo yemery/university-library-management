@@ -47,7 +47,7 @@ function AddUser({ close }) {
   });
 
   return (
-    <form className="flex  flex-col gap-4" onSubmit={addUserForm.handleSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={addUserForm.handleSubmit}>
       <H5 label={"Add user"} />
       <div className="flex flex-col gap-2">
         <Input

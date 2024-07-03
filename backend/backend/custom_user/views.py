@@ -98,6 +98,7 @@ class ImportUsers(APIView):
                 print(row)
             return Response({"message": "Users imported successfully"}, status=201)
         except Exception as e:
+            print(e)
             return Response({"error": str(e)}, status=400)
 
 

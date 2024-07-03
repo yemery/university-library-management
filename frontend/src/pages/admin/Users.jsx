@@ -11,6 +11,7 @@ import { Button } from "flowbite-react";
 import AddUser from "../../components/molecules/AddUser";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ImportUsers from "../../components/molecules/ImportUsers";
 
 function Users() {
   const dispatch = useDispatch();
@@ -36,7 +37,9 @@ function Users() {
     updatePwd: <UpdateUser close={close} />,
     deleteUser: <DeleteUser close={close} />,
     addUser: <AddUser close={close} />,
+    importUsers: <ImportUsers close={close} />,
   };
+
   const handleModal = (content) => {
     setOpenModal(true);
     setModalForm(content);
@@ -56,7 +59,7 @@ function Users() {
 
           <Button
             className="w-80 bg-black  hover:opacity-75 text-white"
-            // onClick={() => }
+            onClick={() => handleModal("importUsers")}
           >
             Import Users
           </Button>

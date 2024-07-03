@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUsers, deleteUser, updateUserPwd, addUser } from "./usersThunks";
-// import { act } from "react";
+import { getUsers, deleteUser, updateUserPwd, addUser, importUsers } from "./usersThunks";
 
 const initialState = {
     users: [],
@@ -48,6 +47,14 @@ const usersSlice = createSlice({
             state.users.push(action.payload);
         });
         builder.addCase(addUser.rejected, (action) => {
+            console.log("rejected", action);
+        });
+
+        // Import users
+        builder.addCase(importUsers.fulfilled, (state) => {
+            console.log("Users imported successfully");
+        });
+        builder.addCase(importUsers.rejected, (action) => {
             console.log("rejected", action);
         });
     },
