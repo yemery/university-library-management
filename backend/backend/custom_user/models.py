@@ -15,5 +15,6 @@ class User(BaseUser):
 
     objects = BaseUserManager()
 
+    #  gotta activate the created at and updated at here 
     # def __str__(self):
     #     return self.email

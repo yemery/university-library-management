@@ -91,20 +91,31 @@ class ImportUsers(APIView):
             data = pd.read_csv(file, delimiter=";")
             # the error here is was by observing the wway data been returned so i added this
             data = pd.DataFrame(data)  # dataframe is for framing
+            count = 0
+            # count total nuumber of line in file
+            # nb_lines = len(data)
             for i, row in data.iterrows():
                 # print(row['email'])
+                if User.objects.filter(email=row["email"]).exists():
+                    continue
                 user = User.objects.create_user(
                     email=row["email"],
-                    role=row["role"],
                     first_name=row["first_name"],
                     last_name=row["last_name"],
-                    password="password",
+                    role=row["role"],
+                    password=row["password"],
                 )
                 user.save()
-                
 
-            return Response({"message": "Password updated successfully"}, status=201)
-            
+                count += 1
+
+            return Response(
+                {
+                    "count": count,
+                    "length": len(data),
+                },
+                status=201,
+            )
 
         except Exception as e:
             print(e)
@@ -153,23 +164,26 @@ class GetUsers(APIView):
         #     "id", "first_name", "last_name", "email", "role"
         # )
         # users_count = users.filter(role__in=["librarian", "student"]).count()
-        users = User.objects.all()
+        users = User.objects.filter(role__in=["librarian", "student"]).order_by(
+            "-date_joined"
+        )
         total_pages = math.ceil(users.count() / 10)
 
         # we will get all users for /get-users/ endpoint
         # then if the user choosed to filter by role in the form of export users
         # we will only get the filter value that will we either libriran or student directly from the query params
         # i suggest having new endpoint for export cus its has its data
-        # user = request.query_params.get(""
-        # role = request.query_params.get("role", None)
-        # if user:
-        #     user = user.strip()
-        # if user is not None:
-        #     users = users.filter(first_name__icontains=user) | users.filter(
-        #         last_name__icontains=user
-        #     )
-        # if role:
-        #     users = users.filter(role=role)
+        user = request.query_params.get("user", None)
+        role = request.query_params.get("role", None)
+        if user:
+            user = user.strip()
+        if user is not None:
+            # filter by or without
+            users = users.filter(first_name__icontains=user) | users.filter(
+                last_name__icontains=user
+            )
+        if role:
+            users = users.filter(role=role)
 
         # removed thses cus also getting users wasnt working
         page = request.query_params.get("page", default=1)
@@ -201,7 +215,7 @@ class UpdateUserPassword(APIView):
             "Password Updated",
             f"Your password has been updated to {new_password}",
             settings.EMAIL_HOST_USER,
-            ["meryemajmani33@gmail.com"],
+            [user.email],
             fail_silently=False,
         )
         return Response({"message": "Password updated successfully"}, status=200)

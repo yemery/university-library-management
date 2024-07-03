@@ -24,9 +24,7 @@ function ImportUsers({ close }) {
           (value) =>
             value &&
             [
-              "application/vnd.ms-excel", // for .xls
               "text/csv", // for .csv
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // for .xlsx
             ].includes(value.type)
         ),
     }),
@@ -37,8 +35,15 @@ function ImportUsers({ close }) {
       if (response?.error?.code === "ERR_BAD_REQUEST") {
         toast.error("Error while importing users");
       } else {
-        toast.success("Users imported successfully");
         dispatch(getUsers());
+        
+        response.payload.count == response.payload.length
+          ? toast.success(
+              `${response.payload.count} of ${response.payload.length} users imported seccessfully`
+            )
+          : toast.warning(
+              `${response.payload.count} of ${response.payload.length} users imported , users already exist in the database`
+            );
       }
       close();
     },

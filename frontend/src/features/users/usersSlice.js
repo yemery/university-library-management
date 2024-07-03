@@ -51,8 +51,11 @@ const usersSlice = createSlice({
         });
 
         // Import users
-        builder.addCase(importUsers.fulfilled, (state) => {
+        builder.addCase(importUsers.fulfilled, (state,action) => {
             console.log("Users imported successfully");
+            // return reposnse data
+            // console.log(action.payload)
+            // return action.payload;
         });
         builder.addCase(importUsers.rejected, (action) => {
             console.log("rejected", action);
