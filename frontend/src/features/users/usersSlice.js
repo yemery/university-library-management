@@ -44,7 +44,8 @@ const usersSlice = createSlice({
 
         // Add user
         builder.addCase(addUser.fulfilled, (state, action) => {
-            state.users.push(action.payload);
+            // state.users=action.payload;
+            // state.users.push(action.payload);
         });
         builder.addCase(addUser.rejected, (action) => {
             console.log("rejected", action);

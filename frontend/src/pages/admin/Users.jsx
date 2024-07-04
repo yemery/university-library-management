@@ -46,6 +46,7 @@ function Users() {
   const handleModal = (content) => {
     setOpenModal(true);
     setModalForm(content);
+    
   };
 
   return (

@@ -7,9 +7,10 @@ import Input from "../atoms/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SelectFilter from "../atoms/SelectFilter";
-import { addUser, getUsers } from "../../features/users/usersThunks";
 import { usersSelectOptions } from "../../assets/filteringOptions";
 import { toast } from "react-toastify";
+import { addUser, getUsers } from "../../features/users/usersThunks";
+
 
 function AddUser({ close }) {
   const dispatch = useDispatch();
@@ -37,12 +38,18 @@ function AddUser({ close }) {
       role: Yup.string().required("Required"),
     }),
 
-    onSubmit: (values) => {
-      dispatch(addUser(values));
-      toast.success("User added successfully");
-      dispatch(getUsers());
-      close();
-      addUserForm.resetForm();
+    onSubmit: async (values) => {
+      try {
+        await dispatch(addUser(values))
+        toast.success("User added successfully");
+        addUserForm.resetForm();
+        console.log("dispatch users");
+        dispatch(getUsers())
+      } catch (error) {
+        console.log(error);
+        toast.error("Bad request");
+      }
+      close()
     },
   });
 

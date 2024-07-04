@@ -26,8 +26,8 @@ class WaitListBook(APIView):
                 'Book added to waiting list',
                 'You have been added to the waiting list for the book '+book.title,
                 settings.EMAIL_HOST_USER,
-                # [request.user.email],
-                ["meryemajmani33@gmail.com"],
+                [request.user.email],
+               
                 fail_silently=False
                 
             )

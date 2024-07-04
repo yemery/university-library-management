@@ -5,7 +5,7 @@ import { Button, Modal } from "flowbite-react";
 import { toast } from "react-toastify";
 import { booksList } from "../../features/book/bookThunks";
 
-function WaitlistBook() {
+function WaitlistBook({close}) {
     const id = useSelector((state) => state.books.bookID);
     const dispatch = useDispatch();
 

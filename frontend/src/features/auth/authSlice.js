@@ -34,10 +34,12 @@ const authSlice = createSlice({
       // localStorage.clear();
       state.isAuthenticated = false;
       state.user = {};
+      state.role = "";
     });
     builder.addCase(logout.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.user = {};
+      
       console.log(action);
     });
 
