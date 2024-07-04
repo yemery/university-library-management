@@ -11,15 +11,18 @@ const Auth = ({ component: Component }) => {
   const userRole = useSelector((state) => state.auth.role);
   const location = useLocation();
   const dispatch = useDispatch();
-  // const [skipEffect, setSkipEffect] = useState(false);
 
   useEffect(() => {
-      if (isAuthenticated)
-        {
-          const decoded = jwtDecode(localStorage.getItem("access"));
-          dispatch(getUserInfo(decoded["user_id"]));
-        }
-  }, [isAuthenticated]);
+    const token = localStorage.getItem("access");
+    if (isAuthenticated && token) {
+      try {
+        const decoded = jwtDecode(token);
+        dispatch(getUserInfo(decoded["user_id"]));
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, [isAuthenticated, dispatch]);
 
   // If the user is not authenticated, redirect to the login page
   if (!isAuthenticated) {

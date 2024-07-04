@@ -25,7 +25,6 @@ function Navbars() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
   };
 
   const navigateToProfile = () => navigate(`/${role}/profile`);

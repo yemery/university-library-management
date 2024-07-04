@@ -40,7 +40,7 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       const response = await dispatch(authenticate(values));
-      if (response.error.code == "ERR_BAD_REQUEST") {
+      if (response?.error?.code == "ERR_BAD_REQUEST") {
         toast.error("Invalid credentials");
       }
     },

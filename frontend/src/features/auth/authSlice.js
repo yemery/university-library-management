@@ -2,8 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { authenticate, logout, updatePassword, getUserInfo } from "./authThunks";
 
 const initialState = {
-  // later we will add the user objectt using decrpyt jwt token
-  user: null,
+  user: {},
   isAuthenticated: localStorage.getItem("access") ? true : false,
   role: localStorage.getItem("role") || "",
 
@@ -14,11 +13,6 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    // checkLogin(state) {
-    //     state.isAuthenticated && state.role != "" ? true : false;
-    // }
-  },
   extraReducers: (builder) => {
     builder.addCase(authenticate.fulfilled, (state, action) => {
       state.isAuthenticated = true;
@@ -37,7 +31,14 @@ const authSlice = createSlice({
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
       localStorage.removeItem("role");
-      return initialState;
+      // localStorage.clear();
+      state.isAuthenticated = false;
+      state.user = {};
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.isAuthenticated = false;
+      state.user = {};
+      console.log(action);
     });
 
     builder.addCase(updatePassword.fulfilled, (state, action) => {
@@ -47,12 +48,12 @@ const authSlice = createSlice({
       state.updatePwd = action.payload;
     });
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
-      
         state.user = action.payload;
-      
     });
     builder.addCase(getUserInfo.rejected, (state, action) => {
-      state.user = null;
+      state.user = {};
+      state.isAuthenticated = false;
+      localStorage.clear()
     });
 
   },
