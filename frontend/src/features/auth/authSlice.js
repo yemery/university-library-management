@@ -3,7 +3,7 @@ import { authenticate, logout, updatePassword, getUserInfo } from "./authThunks"
 
 const initialState = {
   // later we will add the user objectt using decrpyt jwt token
-  user: {},
+  user: null,
   isAuthenticated: localStorage.getItem("access") ? true : false,
   role: localStorage.getItem("role") || "",
 
@@ -34,10 +34,10 @@ const authSlice = createSlice({
       state.user = {};
     });
     builder.addCase(logout.fulfilled, (state, action) => {
-      state.isAuthenticated = false;
-      state.user = {};
-      state.role = "";
-      localStorage.clear();
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("role");
+      return initialState;
     });
 
     builder.addCase(updatePassword.fulfilled, (state, action) => {
@@ -47,10 +47,12 @@ const authSlice = createSlice({
       state.updatePwd = action.payload;
     });
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
-      state.user = action.payload;
+      
+        state.user = action.payload;
+      
     });
     builder.addCase(getUserInfo.rejected, (state, action) => {
-      state.user = {};
+      state.user = null;
     });
 
   },

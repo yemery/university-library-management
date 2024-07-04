@@ -15,7 +15,7 @@ import Users from "./pages/admin/Users";
 export default function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/login",
       element: <Login />,
     },
     {
