@@ -7,10 +7,10 @@ This project is designed to manage a library system efficiently. It features use
 # **👥 Contributors**
 <div align="center">
   <a href="https://github.com/yemery">
-    <img src="https://avatars.githubusercontent.com/u/93683365?v=4" title="buredo" width="80" height="80" style="border-radius: 50%;">
+    <img src="https://avatars.githubusercontent.com/u/93683365?v=4" title="yemery" width="80" height="80" style="border-radius: 50%;">
   </a>
   <a href="https://github.com/sifeddineEddr">
-    <img src="https://avatars.githubusercontent.com/u/108733613?s=96&v=4" title="buredo" width="80" height="80" style="border-radius: 50%; margin-left: 20px;">
+    <img src="https://avatars.githubusercontent.com/u/108733613?s=96&v=4" title="sifeddineEddr" width="80" height="80" style="border-radius: 50%; margin-left: 20px;">
   </a>
 </div>
 
@@ -78,6 +78,15 @@ This project is designed to manage a library system efficiently. It features use
         ```
         
     - Next, copy the .env.example file and assign to the environment variables
+        ```bash
+        cp .env.example .env
+        ```
+    - Assign environment variables with proper values
+  
+        ```bash
+        EMAIL_HOST_PASSWORD= "your email host password"
+        EMAIL_HOST_USER="your email host user"
+        ```
     - Finally, you can run your backend project server
         
         ```bash
